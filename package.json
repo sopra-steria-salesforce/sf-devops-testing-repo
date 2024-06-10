@@ -1,0 +1,56 @@
+{
+	"scripts": {
+		"preinstall": "git config core.hooksPath ./.husky",
+		"lint": "eslint **/{lwc,aura}/**/*.js",
+		"test": "npm run test:unit",
+		"test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
+		"test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
+		"test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
+		"test:unit:coverage": "sfdx-lwc-jest --coverage --skipApiVersionCheck",
+		"prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+		"prettier:file": "prettier --write",
+		"prettier:verify": "prettier --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+		"precommit": "lint-staged",
+		"auth:devhub": "sf auth:web:login --set-default-dev-hub --alias ",
+		"auth:sandbox": "sf auth:web:login --instance-url https://test.salesforce.com --alias ",
+		"scratch:create": "sh scripts/createScratchOrg.command",
+		"scratch:create:win": "scripts\\createScratchOrg.cmd",
+		"scratch:pull": "sf project:retrieve:start",
+		"scratch:push": "sf project:deploy:start",
+		"scratch:status": "sf project:deploy:preview"
+	},
+	"lint-staged": {
+		"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
+			"prettier --write"
+		],
+		"**/{aura,lwc}/**": [
+			"eslint"
+		],
+		"**/lwc/**": [
+			"sfdx-lwc-jest --skipApiVersionCheck -- --bail --findRelatedTests"
+		]
+	},
+	"devDependencies": {
+		"@flxbl-io/sfp": "^37.1.1",
+		"@lwc/eslint-plugin-lwc": "^1.8.0",
+		"@prettier/plugin-xml": "^3.4.1",
+		"@sa11y/jest": "^6.6.0",
+		"@salesforce/cli": "^2.37.0",
+		"@salesforce/eslint-config-lwc": "^3.5.3",
+		"@salesforce/eslint-plugin-aura": "^2.1.0",
+		"@salesforce/eslint-plugin-lightning": "^1.0.0",
+		"@salesforce/sfdx-lwc-jest": "^5.0.0",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "9.1.0",
+		"eslint-plugin-import": "^2.29.1",
+		"eslint-plugin-jest": "^28.2.0",
+		"jest-canvas-mock": "^2.5.2",
+		"lint-staged": "^15.2.2",
+		"node-jq": "^4.3.1",
+		"prettier": "^3.2.5",
+		"prettier-plugin-apex": "^2.1.2"
+	},
+	"volta": {
+		"node": "18.19.1"
+	}
+}

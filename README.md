@@ -21,27 +21,42 @@ You can now (typically):
 
 Make sure you've performed the steps in [Local Setup](docs/devops/local-setup.md) before trying to create a Scratch Org.
 
+## Clone Repo
+
+1. Open the repo in your browser
+1. Click `Code` → `Open with GitHub Desktop`
+1. Save the repo somewhere on your computer
+    - _**Avoid cloud-synced folders!**_
+    - On Windows, the `Documents` folder is synced to OneDrive and will cause issues later!
+1. In GitHub Desktop, click `Repository` → `Open in X`
+    - Depending on your system you can have X = `Command Line`, `Git Bash` og `Terminal`
+    - Once opened, type and run `npm install`
+    - This will install all necessary software for you, including code formatting.
+
 ## Make Changes
 
+1. In GitHub Desktop, click `Repository` → `Open in X`
+    - Depending on your system you can have X = `Command Line`, `Git Bash` og `Terminal`
 1. Run `npm run scratch:create`
-1. Make your change inside the Scratch Org
+    - Now, a fully functioning copy of production (without data) will be created for you.
+1. Make your changes inside the Scratch Org
 1. Run `npm run scratch:pull` to add the changes from the Scratch Org to your local computer
 1. Commit & Push the changes inside GitHub Desktop
 1. Create a Pull Request
     - To `main` or `preprod`, depending on use case
-    - Get validated successfully
-    - If Slack Integration is setup, a post is added for others to code review your changes. Otherwhise, get someone to approve it.
-1. Merge it
+    - Get the changes validated successfully
+    - If Slack Integration is working, a post is added for others to code review your changes. Otherwhise, get someone to approve it.
+1. Merge the PR
 1. Check the package creation status in the `Actions` tab
 1. Once the package is done, check it in the `Code` tab → `Releases`
-1. Click `Deploy` on the release you want to deploy it to production
+1. Click `Deploy` on the release you want to deploy to production
     - Click `Run Workflow`
     - Keep `Branch: main` if you want to deploy the latest package.
     - If you want a specific package, click the dropdown → `Tags` → Choose the version
     - Finally, click `Run workflow` again to deploy
     - Wait a couple of seconds, and a new entry should appear in the list. You can open it to view the progress of the deployment.
 
-# Licensing
+# 😴 Licensing
 
 See [LICENSE](LICENSE), or summarised:
 

@@ -35,7 +35,7 @@ This documentation is for when you want to setup a new repo. Either because you 
 | `SF_PROD_USERNAME`<br>`SF_PROD_INSTANCE_URL`<br>`SF_PREPROD_USERNAME`<br>`SF_PREPROD_INSTANCE_URL`<br>`SF_SIT_USERNAME`<br>`SF_SIT_INSTANCE_URL` | See [Create SF CLI Integration User](#create-sf-cli-integration-user) | ✅ |
 | `SF_SLACK_ENABLED` | Set this value to `true`/`false` | ✅ |
 | `SF_SLACK_DEPLOYMENT_CHANNEL_ID`<br>`SF_SLACK_RELEASE_CHANNEL_ID`<br>`SF_SLACK_REVIEW_CHANNEL_ID`<br>`SF_SLACK_SYNC_CHANNEL_ID` | See [Create Slack Channels](#create-slack-channels) | 🙅 No |
-| `SF_JIRA_URL` | | 🙅 Nope |
+| `SF_JIRA_URL` | The URL to the Jira instance, e.g., `https://COMPANY.atlassian.net` | 🙅 Nope |
 
 ## Create SF CLI Integration User
 
@@ -60,8 +60,8 @@ This documentation is for when you want to setup a new repo. Either because you 
 | `SF_PACKAGE_KEY`| Can be whatever you want.<br>But it's a password every developer needs to remember. | ✅ |
 | `SF_GITHUB_BOT_APP_ID`<br>`SF_GITHUB_BOT_PRIVATE_KEY` | See [Create GitHub App](#create-github-app) | ✅ |
 | `SF_PROD_CLIENT_ID`<br>`SF_PROD_CLIENT_SECRET`<br>`SF_PROD_PRIVATE_KEY`<br>`SF_PREPROD_CLIENT_ID`<br>`SF_PREPROD_PRIVATE_KEY`<br>`SF_SIT_CLIENT_ID`<br>`SF_SIT_PRIVATE_KEY` | See [Create SF CLI Connected App](#create-sf-cli-connected-app) | ✅ |
-| `SF_SLACK_BOT_TOKEN` | See [Slack Integration](#slack-integration) | 🙅 Hell nah |
 | `SF_JIRA_ACCESS_TOKEN` | See [Jira Integration](#jira-integration) | 🙅 Nah girl |
+| `SF_SLACK_BOT_TOKEN` | See [Slack Integration](#slack-integration) | 🙅 Hell nah |
 
 ## Create GitHub App
 
@@ -88,6 +88,10 @@ This documentation is for when you want to setup a new repo. Either because you 
 
 <!-- TODO: create -->
 
+## Jira Integration
+
+See [Manage API tokens for your Atlassian account](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) for how to create an API token. This token will be stored as the secret `SF_JIRA_ACCESS_TOKEN`.
+
 ## Slack Integration
 
 By adding an API token for Slack, you'll get deployment logs/errors, release notes and code reviews posted to Slack automatically.
@@ -100,17 +104,43 @@ By adding an API token for Slack, you'll get deployment logs/errors, release not
 1. Go to `OAuth & Permissions` → Press `Copy` on the `Bot User OAuth Token`
     - This will be the secret `SF_SLACK_BOT_TOKEN`
 
-### App Manifest to Copy/Paste
+#### App Manifest to Copy/Paste:
 
+<!-- prettier-ignore -->
 ```json
 {
-	"display_information": { "name": "Salesforce Bot", "description": "Jeg poster oppdateringer om Salesforce", "background_color": "#3854a1" },
-	"features": { "bot_user": { "display_name": "Salesforce Bot", "always_online": false } },
-	"oauth_config": { "scopes": { "bot": ["channels:history", "chat:write", "chat:write.customize", "groups:history", "im:history", "incoming-webhook", "mpim:history", "reactions:write"] } },
-	"settings": { "interactivity": { "is_enabled": false }, "org_deploy_enabled": false, "socket_mode_enabled": false, "token_rotation_enabled": false }
+    "display_information": {
+        "name": "Salesforce Bot",
+        "description": "Jeg poster oppdateringer om Salesforce",
+        "background_color": "#3854a1"
+    },
+    "features": {
+        "bot_user": {
+            "display_name": "Salesforce Bot",
+            "always_online": false
+        }
+    },
+    "oauth_config": {
+        "scopes": {
+            "bot": [
+                "channels:history",
+                "chat:write",
+                "chat:write.customize",
+                "groups:history",
+                "im:history",
+                "incoming-webhook",
+                "mpim:history",
+                "reactions:write"
+            ]
+        }
+    },
+    "settings": {
+        "interactivity": {
+            "is_enabled": false
+        },
+        "org_deploy_enabled": false,
+        "socket_mode_enabled": false,
+        "token_rotation_enabled": false
+    }
 }
 ```
-
-## Jira Integration
-
-See [Manage API tokens for your Atlassian account](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) for how to create an API token. This token will be stored as the secret `SF_JIRA_ACCESS_TOKEN`.

@@ -39,7 +39,31 @@ This documentation is for when you want to setup a new repo. Either because you 
 
 ## Create SF CLI Integration User
 
-<!-- TODO: create -->
+You will need one dedicated user in every Salesforce instance to deploy on behalf of every developer. This is an integration user with enough access in production (or preprod) to deploy metadata through the Metadata API. It should not have any unecessary access not needed or even access to the GUI, to reduce the impact if the credentials to the user should be leaked. It won't even have a password, just a private key needed to be able to login into the user.
+
+1. Open Production → Setup → Users → `New User`
+    - **First Name**: `SF CLI`
+    - **Last Name**: `INTEGRATION USER`
+    - **Email**: your own
+    - **Username**: `SF.CLI.INTEGRATION.USER@company.no`
+    - **Profile**: `System Administrator`
+    - Click `Save`
+1. Create a new permission set named `sf_cli_integration_user`
+    - With the following System Permissions:
+        - `API Enabled`
+        - `Api Only User`
+        - `Create and Update Second-Generation Packages`
+        - `Delete Second-Generation Packages`
+        - `Modify Metadata Through Metadata API Functions`
+    - With the following Object Settings:
+        - `Active Scratch Orgs`: `modify all`
+        - `Scratch Org Infos`: `modify all`
+1. Assign the permission set to the new integration user
+1. Add Variables in GitHub
+    - Add the username of the new user (`SF_XXX_USERNAME`)
+    - Add the instance url of the instance (`SF_XXX_INSTANCE_URL`).
+    - Typically `https://COMPANY.my.salesforce.com` or `https://COMPANY--preprod.sandbox.my.salesforce.com`
+1. Do the same for preprod and SIT
 
 ## Create Slack Channels
 
@@ -86,7 +110,70 @@ This documentation is for when you want to setup a new repo. Either because you 
 
 ## Create SF CLI Connected App
 
-<!-- TODO: create -->
+To be able to login in to the created SF CLI integration user, you'll need to create a certificate and a connected app.
+
+### Create Certificate:
+
+You'll need either:
+
+-   macOS
+-   Linux on Windows with WSL
+-   Find online whetever you need to do on Windows to make certificates
+-   Ask a friend
+
+Run the following code 3x times using:
+
+-   **ENV**: `PROD`
+-   **ENV**: `PREPROD`
+-   **ENV**: `SIT`
+
+```shell
+ENV="CHANGE_ME" # remember to change to eother PROD, PREPROD or SIT
+NAME="COMPANY NAME"
+CITY="YOUR CITY"
+EMAIL="YOUR_EMAIL@COMPANY.NO"
+
+PASSWORD=$(openssl rand -base64 70 | sed -E 's/(.)\1+/\1/g') # you'll need a random password, but you don't need to store it anywhere
+mkdir -p ~/Desktop/tmp && mkdir -p ~/Desktop/certificates
+openssl genpkey -des3 -algorithm RSA -pass pass:$PASSWORD -out ~/Desktop/tmp/${ENV}.pass.key -pkeyopt rsa_keygen_bits:2048
+openssl rsa -passin pass:$PASSWORD -in ~/Desktop/tmp/$ENV.pass.key -out ~/Desktop/certificates/$ENV.private.key
+openssl req -new -key ~/Desktop/certificates/$ENV.private.key -out ~/Desktop/tmp/$ENV.csr -subj "/CN=NO/emailAddress=$EMAIL/C=NO/ST=$CITY/L=$CITY/O=$NAME/OU=$NAME"
+openssl x509 -req -sha256 -days 365 -in ~/Desktop/tmp/$ENV.csr -signkey ~/Desktop/certificates/$ENV.private.key -out ~/Desktop/certificates/$ENV.public.crt
+
+open ~/Desktop/certificates
+```
+
+Then open the following file in VS Code:
+
+-   Open `PROD.private.key`, copy the text and then save it in the GitHub secret as `SF_PROD_PRIVATE_KEY`
+-   Open `PREPROD.private.key`, copy the text and then save it in the GitHub secret as `SF_PREPROD_PRIVATE_KEY`
+-   Open `SIT.private.key`, copy the text and then save it in the GitHub secret as `SF_SIT_PRIVATE_KEY`
+
+### Create Connected App
+
+1. Open Production → Setup → App Manager → Click `New Connected App`
+    - **Name**: `sf_cli`
+    - **API Name**: sf_cli``
+    - **Contact Email**: your own, but it's never used for anything
+    - **Enable OAuth Settings**: ✅
+    - **Callback URL**: `http://localhost:1717/OauthRedirect`
+    - **Use digital signatures**: upload the `XXX.public.crt` file (PROD, PREPROD or SIT)
+    - **Selected OAuth Scopes**:
+        - `Manage user data via APIs (api)`
+        - `Manage user data via Web browsers (web)`
+        - `Perform requests at any time (refresh_token, offline_access)`
+    - Click `Save`
+1. Click Manage Consumer Details
+    - Copy the `Consumer Key` and store it as the GitHub secret `SF_XXX_CLIENT_ID`
+    - PRODUCTION ONLY: Copy the `Consumer Secret` and store it as the GitHub secret `SF_XXX_CLIENT_SECRET`
+1. Click `Back to Manage Connected Apps` → Click `Manage` → Click `Edit Policies`
+    - **Permitted users**: `Admin approved users are pre-authorized`
+    - **Refresh Token Policy**: set `Expire refresh token after` to 90 days
+    - **Timeout Value**: `15 minutes`
+    - Click `Save`
+1. Open the permission set `sf_cli` you previously created
+    - Click `Assigned Connected Apps` → Edit → Add the newly created connected app `sf_cli`
+1. Do everything again, but for `preprod` and `sit`
 
 ## Jira Integration
 

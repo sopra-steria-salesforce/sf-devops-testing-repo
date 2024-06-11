@@ -154,7 +154,7 @@ Then open the following file in VS Code:
 
 1. Open Production → Setup → App Manager → Click `New Connected App`
     - **Name**: `sf_cli`
-    - **API Name**: sf_cli``
+    - **API Name**: `sf_cli`
     - **Contact Email**: your own, but it's never used for anything
     - **Enable OAuth Settings**: ✅
     - **Callback URL**: `http://localhost:1717/OauthRedirect`

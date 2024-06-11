@@ -4,7 +4,7 @@ This documentation is for when you want to setup a new repo. Either because you 
 
 1. On the [salesforce-dx-template](https://github.com/sopra-steria-salesforce/salesforce-dx-template) main page, click `Use this template` and give your repo a name
     - Do _**not**_ copy branches
-1. From now on, all changes described are to be done on the new repo you jsut created
+1. From now on, all changes described are to be done on the new repo you just created
 1. Go to `Settings` → `Collaborators and teams`
     - Add whoever needs access.
 1. Setup Environments

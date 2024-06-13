@@ -13,8 +13,7 @@
 		"precommit": "lint-staged",
 		"auth:devhub": "sf auth:web:login --set-default-dev-hub --alias ",
 		"auth:sandbox": "sf auth:web:login --instance-url https://test.salesforce.com --alias ",
-		"scratch:create": "sh scripts/createScratchOrg.command",
-		"scratch:create:win": "scripts\\createScratchOrg.cmd",
+		"scratch:create": "node node_modules/ssdx-cli/build/index.js create",
 		"scratch:pull": "sf project:retrieve:start",
 		"scratch:push": "sf project:deploy:start",
 		"scratch:status": "sf project:deploy:preview"
@@ -48,7 +47,8 @@
 		"lint-staged": "^15.2.2",
 		"node-jq": "^4.3.1",
 		"prettier": "^3.2.5",
-		"prettier-plugin-apex": "^2.1.2"
+		"prettier-plugin-apex": "^2.1.2",
+		"ssdx-cli": "^0.1.0-dev6"
 	},
 	"volta": {
 		"node": "18.19.1"

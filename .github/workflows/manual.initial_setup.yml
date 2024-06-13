@@ -151,9 +151,7 @@ jobs:
   create-rulesets:
     name: Create rulesets
     needs: delete-old-rulesets
-    permissions:
-      contents: read
-      id-token: write
+    permissions: write-all
     runs-on: ubuntu-latest
     strategy:
       matrix:

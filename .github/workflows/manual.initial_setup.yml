@@ -217,13 +217,13 @@ jobs:
       matrix:
         include:
           - ENV: prod
-            SETTINGS: '{ "wait_timer": 15, "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+            SETTINGS: "{ 'wait_timer': 15, 'deployment_branch_policy': { 'custom_branch_policies': false, 'protected_branches': true }}"
           - ENV: test
-            SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+            SETTINGS: "{ 'deployment_branch_policy': { 'custom_branch_policies': false, 'protected_branches': true }}"
           - ENV: dev
-            SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+            SETTINGS: "{ 'deployment_branch_policy': { 'custom_branch_policies': false, 'protected_branches': true }}"
           - ENV: sit
-            SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+            SETTINGS: "{ 'deployment_branch_policy': { 'custom_branch_policies': false, 'protected_branches': true }}"
     continue-on-error: true
     steps:
       - name: Generate GitHub token

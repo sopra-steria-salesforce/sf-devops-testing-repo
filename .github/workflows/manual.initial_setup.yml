@@ -235,7 +235,7 @@ jobs:
       - name: Create env '${{ matrix.ENV }}'
         run: |
           #! create environment
-          echo ${{ matrix.SETTINGS }} | gh api --silent --method PUT -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/environments/${{ matrix.ENV }} --input -
+          echo "${{ matrix.SETTINGS }}" | gh api --silent --method PUT -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/environments/${{ matrix.ENV }} --input -
           #! create environment variable SF_URL
         # gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/environments/${{ matrix.ENV }}/variables -f name='SF_URL' -f value='${{ matrix.SF_URL }}'
         env:

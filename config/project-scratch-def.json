@@ -2,29 +2,10 @@
 	"orgName": "Your Company",
 	"edition": "Enterprise",
 	"adminEmail": "admin@your_company.no.invalid",
-	"features": [
-		"ProcessBuilder",
-		"API",
-		"LiveAgent",
-		"PersonAccounts",
-		"ContactsToMultipleAccounts",
-		"ServiceCloud",
-		"ServiceUser",
-		"Chatbot",
-		"FieldAuditTrail"
-	],
+	"features": ["ProcessBuilder", "API", "ServiceCloud", "ServiceUser"],
 	"country": "NO",
 	"language": "en_US",
 	"settings": {
-		"surveySettings": {
-			"enableSurvey": true
-		},
-		"accountSettings": {
-			"enableRelateContactToMultipleAccounts": true
-		},
-		"botSettings": {
-			"enableBots": true
-		},
 		"emailAdministrationSettings": {
 			"enableEnhancedEmailEnabled": true
 		},
@@ -37,14 +18,6 @@
 		},
 		"lightningExperienceSettings": {
 			"enableS1DesktopEnabled": true
-		},
-		"liveAgentSettings": {
-			"enableLiveAgent": true
-		},
-		"omniChannelSettings": {
-			"enableOmniChannel": true,
-			"enableOmniSecondaryRoutingPriority": true,
-			"enableOmniSkillsRouting": true
 		},
 		"pathAssistantSettings": {
 			"pathAssistantEnabled": true

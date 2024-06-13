@@ -176,7 +176,7 @@ jobs:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
 
   # -------------------------------------------------------------------------- #
-  #                            Create First Release                            #
+  #                            Create Environments                             #
   # -------------------------------------------------------------------------- #
 
   delete-old-environments:

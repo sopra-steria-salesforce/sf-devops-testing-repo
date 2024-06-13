@@ -1,5 +1,5 @@
 {
-	"id": 274196,
+	"id": 915281,
 	"name": "Require Approvers",
 	"target": "branch",
 	"source_type": "Repository",
@@ -30,7 +30,7 @@
 			"bypass_mode": "always"
 		},
 		{
-			"actor_id": 278351,
+			"actor_id": 920577,
 			"actor_type": "Integration",
 			"bypass_mode": "always"
 		},

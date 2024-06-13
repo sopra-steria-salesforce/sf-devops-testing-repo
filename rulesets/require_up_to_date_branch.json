@@ -1,5 +1,5 @@
 {
-	"id": 274283,
+	"id": 915285,
 	"name": "Require up-to-date branch",
 	"target": "branch",
 	"source_type": "Repository",
@@ -32,7 +32,7 @@
 			"bypass_mode": "always"
 		},
 		{
-			"actor_id": 278351,
+			"actor_id": 920577,
 			"actor_type": "Integration",
 			"bypass_mode": "always"
 		},

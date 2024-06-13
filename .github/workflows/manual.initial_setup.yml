@@ -167,9 +167,10 @@ jobs:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
           private-key: ${{ secrets.SF_GITHUB_BOT_PRIVATE_KEY }}
       - name: Creating Rule '${{ matrix.rule }}'
+        # TODO: add input to change the bot
         run: |
           rule=$(cat ./rulesets/${{ matrix.rule }}.json)
-          echo $rule | gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/rulesets --input -
+          echo '$rule' | gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/rulesets --input -
           echo "::notice::Created rule ${{ matrix.rule }}"
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}

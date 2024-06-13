@@ -1,5 +1,5 @@
 {
-	"id": 500635,
+	"id": 915278,
 	"name": "Default Protection",
 	"target": "branch",
 	"source_type": "Repository",
@@ -63,7 +63,7 @@
 			"bypass_mode": "always"
 		},
 		{
-			"actor_id": 278351,
+			"actor_id": 920577,
 			"actor_type": "Integration",
 			"bypass_mode": "always"
 		},

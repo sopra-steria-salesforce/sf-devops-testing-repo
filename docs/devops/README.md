@@ -7,9 +7,6 @@ This documentation is for when you want to setup a new repo. Either because you 
 1. From now on, all changes described are to be done on the new repo you just created
 1. Go to `Settings` → `Collaborators and teams`
     - Add whoever needs access.
-1. Setup Environments
-    - Go to repo Settings → `Environments` → `New environment`
-    - Create for `prod`, `preprod` and `sit`
 1. Add secrets and variables
     - Secrets and variables can be added globally (GitHub org settings), in a specific repo (repo settings) or using environments. Unsure? Repo settings is a safe bet.
     - In org or repo settings → `Secrets and Variables` → `Actions`

@@ -56,6 +56,14 @@ Make sure you've performed the steps in [Local Setup](docs/devops/local-setup.md
     - Finally, click `Run workflow` again to deploy
     - Wait a couple of seconds, and a new entry should appear in the list. You can open it to view the progress of the deployment.
 
+# Template Updates
+
+You can easily merge in new changes from the template
+
+1. `git remote add template https://github.com/sopra-steria-salesforce/salesforce-dx-template`
+1. `git fetch --all`
+1. `git merge template/main --allow-unrelated-histories`
+
 # 😴 Licensing
 
 See [LICENSE](LICENSE), or summarised:

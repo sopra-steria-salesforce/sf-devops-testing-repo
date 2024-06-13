@@ -169,7 +169,7 @@ jobs:
       - name: Creating Rule '${{ matrix.rule }}'
         # TODO: add input to change the bot
         run: |
-          rule=$(cat ./rulesets/${{ matrix.rule }}.json)
+          rule=$(cat ./.github/rulesets/${{ matrix.rule }}.json)
           echo $rule | gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/rulesets --input -
           echo "::notice::Created rule ${{ matrix.rule }}"
         env:
@@ -378,31 +378,6 @@ jobs:
 
       # Commit Changes
       - run: git add sfdx-project.json && git commit -m "[CI] Updated to new version number 0.2.0"
-
-      # Fix readme
-      - name: Update Readme
-        run: |
-          echo '# ${{ steps.repo-name.outputs.repository-name }}' > README.md && echo '' >> README.md
-          echo '[beskrivelse]' >> README.md && echo '' >> README.md
-          echo '## Funksjonalitet' >> README.md && echo '' >> README.md
-          echo '[funksjonalitet]' >> README.md && echo '' >> README.md
-          echo '# Development Setup' >> README.md && echo '' >> README.md
-          echo '1. Clone this repo' >> README.md
-          echo '2. Open the terminal in the folder of the repo (Use `Ctrl+<` inside GitHub Desktop for opening)' >> README.md
-          echo '    - Run `npm install` to install dependencies' >> README.md
-          echo '3. Open the repo inside VS Code' >> README.md
-          echo '    - Remember to install the recommended plugins (lower right corner)' >> README.md
-          echo '4. Run `npm run scratch:create` or (for Windows: `npm run scratch:create:win`)' >> README.md
-          echo "    - You'll be asked for a package key and DevHub information." >> README.md
-          echo '    - See next part of this read me for info on how to fetch this.' >> README.md && echo '' >> README.md
-          echo '# DevHub and Package Key' >> README.md && echo '' >> README.md
-          echo '## DevHub' >> README.md && echo '' >> README.md
-          echo 'Run `npm run scratch:auth` and login into the production org. Ask someone in the team for credentials to production.' >> README.md && echo '' >> README.md
-          echo '## Package Key' >> README.md && echo '' >> README.md
-          echo 'This is the key needed to install dependencies. Ask someone in the team what the key is.' >> README.md && echo '' >> README.md
-
-      # Commit Changes
-      - run: git add README.md && git commit -m "[CI] Updated README.md"
 
       # git push
       - run: git push origin HEAD:${{ github.ref_name }}

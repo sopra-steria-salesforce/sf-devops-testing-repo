@@ -166,7 +166,6 @@ jobs:
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
           private-key: ${{ secrets.SF_GITHUB_BOT_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
       - name: Creating Rule '${{ matrix.rule }}'
         run: |
           rule=$(cat ./rulesets/${{ matrix.rule }}.json)

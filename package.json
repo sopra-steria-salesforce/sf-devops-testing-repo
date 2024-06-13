@@ -46,7 +46,7 @@
 		"lint-staged": "^15.2.2",
 		"prettier": "^3.2.5",
 		"prettier-plugin-apex": "^2.1.2",
-		"ssdx-cli": "^0.1.0-dev6"
+		"ssdx-cli": "^0.2.0-dev1"
 	},
 	"volta": {
 		"node": "18.19.1"

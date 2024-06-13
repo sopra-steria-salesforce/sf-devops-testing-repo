@@ -13,13 +13,7 @@ This documentation is for when you want to setup a new repo. Either because you 
     - Add the needed secrets and variables (see [Variables](#variables) and [Secrets](#secrets) below)
 1. Initialise repo
     - **Make sure all secrets are added before this step!**
-    - The last step! This step will automatically:
-        - Set Labels
-        - Set Settings
-        - Create Rulesets
-        - Create first GitHub release
-        - Create Salesforce Unlocked Package
-        - Create preprod branch
+    - The last step! This step will automatically set labels, settings, rulesets, create first GitHub release, Salesforce Unlocked Package and create preprod branch
     - On your new repo → `Actions` tab → `Show more workflows...` → `[X] Initialise/Update Repo` → `Run workflow` (x2)
     - Ensure the job runs successfully. You can retry or re-run the job safely if something failed.
 1. Your repo should now be done! 🎉

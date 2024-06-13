@@ -170,12 +170,11 @@ jobs:
           owner: ${{ github.repository_owner }}
       - name: Creating Rule '${{ matrix.rule }}'
         run: |
-          rule=$(gh api "/repos/${{ github.repository_owner }}/${{ env.SOURCE_REPO }}/contents/rulesets/${{ matrix.rule }}.json" -H "Accept: application/vnd.github.raw")
+          rule=$(gh api "/repositories/${{ github.repository_id }}/contents/rulesets/${{ matrix.rule }}.json" -H "Accept: application/vnd.github.raw")
           echo $rule | gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/rulesets --input -
           echo "::notice::Created rule ${{ matrix.rule }}"
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
-          SOURCE_REPO: sf-develop-workflows #! the rules are stored in this repo for easy storage at a single location
 
   # -------------------------------------------------------------------------- #
   #                            Create First Release                            #

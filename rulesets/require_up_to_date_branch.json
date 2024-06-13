@@ -1,0 +1,45 @@
+{
+	"id": 274283,
+	"name": "Require up-to-date branch",
+	"target": "branch",
+	"source_type": "Repository",
+	"source": "3lvia/sf-platform-ci-cd",
+	"enforcement": "active",
+	"conditions": {
+		"ref_name": {
+			"exclude": [],
+			"include": ["~DEFAULT_BRANCH"]
+		}
+	},
+	"rules": [
+		{
+			"type": "required_status_checks",
+			"parameters": {
+				"strict_required_status_checks_policy": true,
+				"required_status_checks": [
+					{
+						"context": "Run Apex Tests",
+						"integration_id": 15368
+					}
+				]
+			}
+		}
+	],
+	"bypass_actors": [
+		{
+			"actor_id": 5,
+			"actor_type": "RepositoryRole",
+			"bypass_mode": "always"
+		},
+		{
+			"actor_id": 278351,
+			"actor_type": "Integration",
+			"bypass_mode": "always"
+		},
+		{
+			"actor_id": 1,
+			"actor_type": "OrganizationAdmin",
+			"bypass_mode": "always"
+		}
+	]
+}

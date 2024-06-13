@@ -162,6 +162,7 @@ jobs:
           - require_approvers
           - require_up_to_date_branch
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/create-github-app-token@v1
         id: generate_token
         with:
@@ -170,7 +171,7 @@ jobs:
           owner: ${{ github.repository_owner }}
       - name: Creating Rule '${{ matrix.rule }}'
         run: |
-          rule=$(gh api "/repositories/${{ github.repository_id }}/contents/rulesets/${{ matrix.rule }}.json" -H "Accept: application/vnd.github.raw")
+          rule=$(cat ./rulesets/${{ matrix.rule }}.json)
           echo $rule | gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/rulesets --input -
           echo "::notice::Created rule ${{ matrix.rule }}"
         env:

@@ -178,6 +178,69 @@ jobs:
   #                            Create First Release                            #
   # -------------------------------------------------------------------------- #
 
+  delete-old-environments:
+    name: Delete Old Environments
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Generate GitHub token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
+          private-key: ${{ secrets.SF_GITHUB_BOT_PRIVATE_KEY }}
+      - name: Delete Existing
+        run: |
+          data=$(gh api -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/environments)
+          echo "$data" | jq -c '.environments[]' | while read -r element; do
+              name=$(echo $element | jq -r '.name')
+              gh api --silent --method DELETE -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/environments/$name
+              echo "::notice::Deleted environment '$name'"
+          done
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+  create-environments:
+    name: Create Environments
+    needs: delete-old-environments
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - ENV: prod
+            SETTINGS: '{ "wait_timer": 15, "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+          - ENV: test
+            SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+          - ENV: dev
+            SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+          - ENV: sit
+            SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
+    continue-on-error: true
+    steps:
+      - name: Generate GitHub token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
+          private-key: ${{ secrets.SF_GITHUB_BOT_PRIVATE_KEY }}
+      - name: Create env '${{ matrix.ENV }}'
+        run: |
+          #! create environment
+          echo ${{ matrix.SETTINGS }} | gh api --silent --method PUT -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/environments/${{ matrix.ENV }} --input -
+          #! create environment variable SF_URL
+        # gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/environments/${{ matrix.ENV }}/variables -f name='SF_URL' -f value='${{ matrix.SF_URL }}'
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+
+  # -------------------------------------------------------------------------- #
+  #                            Create First Release                            #
+  # -------------------------------------------------------------------------- #
+
   create-release:
     name: Create Release
     if: inputs.create-release

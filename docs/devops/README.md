@@ -100,10 +100,8 @@ You will need one dedicated user in every Salesforce instance to deploy on behal
     - `Contents`: Read and write
     - `Pull requests`: Read and write
     - `Variables`: Read and write
-
--   Organization permissions:
-    -   `Members`: Read-only
-
+1. Organization permissions:
+    - `Members`: Read-only
 1. Click `Create GitHub app`
 1. Click `Generate a new client secret`
     - You should now have created a value needed for the secret `SF_GITHUB_BOT_PRIVATE_KEY`

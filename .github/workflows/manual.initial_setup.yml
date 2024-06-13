@@ -216,9 +216,7 @@ jobs:
         include:
           - ENV: prod
             SETTINGS: '{ "wait_timer": 15, "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
-          - ENV: test
-            SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
-          - ENV: dev
+          - ENV: preprod
             SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'
           - ENV: sit
             SETTINGS: '{ "deployment_branch_policy": { "custom_branch_policies": false, "protected_branches": true }}'

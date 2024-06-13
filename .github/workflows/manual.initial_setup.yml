@@ -11,6 +11,9 @@ on:
       set-rulesets:
         type: boolean
         default: true
+      create-environments:
+        type: boolean
+        default: true
       create-release:
         type: boolean
         default: true
@@ -180,6 +183,7 @@ jobs:
 
   delete-old-environments:
     name: Delete Old Environments
+    if: inputs.create-environments
     permissions:
       contents: read
       id-token: write

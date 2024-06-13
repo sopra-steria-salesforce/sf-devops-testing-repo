@@ -107,6 +107,7 @@ You will need one dedicated user in every Salesforce instance to deploy on behal
 1. Scroll to the bottom → Click `Generate a private key` → A file will be downloaded
     - Open the file (e.g., in VS Code)
     - The content inside the file should be stored as the secret `SF_GITHUB_BOT_PRIVATE_KEY`
+    - Copy everything in the file to the secret, including `-----BEGIN RSA PRIVATE KEY-----` and `-----END RSA PRIVATE KEY-----`
 1. Click `Install App` → choose either all repositories (or just the ones you need it on)
 
 ## Create SF CLI Connected App

@@ -170,6 +170,7 @@ jobs:
         # TODO: add input to change the bot
         run: |
           rule=$(cat ./.github/rulesets/${{ matrix.rule }}.json)
+          rule=$(echo $rule | jq '.bypass_actors[] |= if .actor_type == "Integration" then .actor_id = ${{ secrets.SF_GITHUB_BOT_APP_ID }} else . end')
           echo $rule | gh api --silent --method POST -H "Accept: application/vnd.github+json" /repositories/${{ github.repository_id }}/rulesets --input -
           echo "::notice::Created rule ${{ matrix.rule }}"
         env:

@@ -25,14 +25,20 @@ jobs:
       pr_number: ${{ github.event.number }}
   delete-branch:
     name: Delete Branch
-    permissions: write-all
+    permissions:
+      contents: write
     if: github.event.pull_request.merged == true && contains(fromJSON('["master", "main"]'), github.base_ref)
     runs-on: ubuntu-latest
     steps:
       - name: delete branch
-        uses: SvanBoxel/delete-merged-branch@1.4.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.deleteRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `heads/${context.payload.pull_request.head.ref}`,
+            })
   update-code-review-post:
     name: Update Code Review Status
     runs-on: ubuntu-latest

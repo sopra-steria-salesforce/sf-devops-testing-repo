@@ -33,5 +33,6 @@
 	},
 	"workbench.tree.indent": 16,
 	"editor.formatOnPaste": true,
-	"prettier.configPath": "./.prettierrc"
+	"prettier.configPath": "",
+	"html.completion.attributeDefaultValue": "empty"
 }

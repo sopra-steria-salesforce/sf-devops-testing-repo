@@ -97,6 +97,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Install npm dependencies
+      - uses: actions/create-github-app-token@v1
+        id: generate_token
+        with:
+          app-id: ${{ env.GITHUB_BOT_APP_ID }}
+          private-key: ${{ env.GITHUB_BOT_PRIVATE_KEY }}
+      - uses: actions/setup-node@v4
+        with:
+          cache: npm # fetch cache of packages to install
+          token: ${{ steps.generate_token.outputs.token }} # needs custom token to avoid rate limit
+          node-version: 20
+      - run: npm ci --prefer-offline --no-audit # force offline installs for quicker run
+
       # Install & Authorize sf cli
       - name: Install & Authorize sf cli (${{ inputs.ENV }})
         if: inputs.ENV != 'sit'

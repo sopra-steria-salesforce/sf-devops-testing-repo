@@ -141,6 +141,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Authenticate Dev Hub
+        uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+        continue-on-error: true
+        with:
+          sf-cli-version: 2.34.7
+          username: ${{ env.SF_BOT_USERNAME }}
+          client-id: ${{ env.SF_BOT_CLIENT_ID }}
+          private-key: ${{ env.SF_BOT_PRIVATE_KEY }}
+          set-default-dev-hub: true
       - name: Authenticate Scratch Org
         uses: sopra-steria-salesforce/sf-cli-setup@v0.8
         continue-on-error: true

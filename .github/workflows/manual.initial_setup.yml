@@ -374,7 +374,8 @@ jobs:
 
       # Update version number
       - name: Update version number
-        uses: navikt/github-action-sfdx-version-updater@master
+        uses: sopra-steria-salesforce/sf-unlocked-package-version-updater@v1
+
       - run: cat sfdx-project.json
 
       # Commit Changes

@@ -92,8 +92,7 @@ jobs:
 
       # Update version number
       - name: Update version number
-        id: packaging-updater
-        uses: navikt/github-action-sfdx-version-updater@master
+        uses: sopra-steria-salesforce/sf-unlocked-package-version-updater@v1
 
       # git commit and push
       - uses: fregante/setup-git-user@v2

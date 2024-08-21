@@ -118,7 +118,7 @@ jobs:
         with:
           cache: npm # fetch cache of packages to install
           token: ${{ steps.generate_token.outputs.token }} # needs custom token to avoid rate limit
-          node-version: 18
+          node-version: 20
       - run: npm ci --prefer-offline --no-audit # force offline installs for quicker run
 
       # Prettify sfdx-project.json

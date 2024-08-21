@@ -56,12 +56,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Reset Dependency Cache When Recreating Scratch Org
-        if: steps.recreate-scratch-org.outputs.isSet == 'true'
-        run: gh api --silent --method DELETE /repositories/${{ github.repository_id }}/actions/caches?key=dependency-changes-pr-${{ github.event.number }}-${{ hashFiles('sfdx-project.json') }} || true #! ignore errors
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     outputs:
       recreateScratchOrg: ${{ steps.recreate-scratch-org.outputs.isSet == 'true' }}
       disableSnapshot: ${{ steps.disable-snapshot.outputs.isSet == 'true' }}

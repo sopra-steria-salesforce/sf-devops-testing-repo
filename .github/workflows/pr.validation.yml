@@ -60,7 +60,7 @@ jobs:
         id: dependencies-cache
         with:
           path: sfdx-project.json
-          key: dependency-changes-pr-${{ github.event.number }}-${{ hashFiles('sfdx-project.json') }}
+          key: dependency-changes-pr-${{ github.event.number }}-org-${{ needs.scratch-org.outputs.username }}-${{ hashFiles('sfdx-project.json') }}
       - name: Authenticate DevHub
         if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true'
         uses: sopra-steria-salesforce/sf-cli-setup@v0.8

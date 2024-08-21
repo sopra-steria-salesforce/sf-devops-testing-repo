@@ -13,10 +13,12 @@
 		"precommit": "lint-staged",
 		"auth:devhub": "sf auth:web:login --set-default-dev-hub --alias ",
 		"auth:sandbox": "sf auth:web:login --instance-url https://test.salesforce.com --alias ",
-		"scratch:create": "node node_modules/ssdx-cli/build/index.js create",
-		"scratch:pull": "sf project:retrieve:start",
-		"scratch:push": "sf project:deploy:start",
-		"scratch:status": "sf project:deploy:preview"
+		"scratch:create": "npx ssdx create --",
+		"scratch:help": "npx ssdx create -h && echo && echo && echo && echo 'run: \"npm run scratch:create -- <PARAMETERS_FROM_ABOVE>\"'",
+		"project:retrieve": "sf project:retrieve:start",
+		"project:deploy": "sf project:deploy:start",
+		"project:retrieve:preview": "sf project:retrieve:preview",
+		"project:deploy:preview": "sf project:deploy:preview"
 	},
 	"lint-staged": {
 		"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
@@ -46,7 +48,7 @@
 		"lint-staged": "^15.2.2",
 		"prettier": "^3.2.5",
 		"prettier-plugin-apex": "^2.1.2",
-		"ssdx-cli": "^0.2.0-dev1"
+		"ssdx-cli": "^0.9.12"
 	},
 	"volta": {
 		"node": "18.19.1"

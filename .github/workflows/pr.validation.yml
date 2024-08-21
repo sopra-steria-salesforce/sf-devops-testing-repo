@@ -96,6 +96,20 @@ jobs:
       - run: npm ci --prefer-offline --no-audit # force offline installs for quicker run
         if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true'
 
+      # Run Pre-Dependencies Steps
+      - name: Run Pre-Dependencies Steps
+        if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true'
+        run: npx ssdx resource --pre-dependencies --target-org ${{ needs.scratch-org.outputs.username }} --show-output --ci
+
+      # View SSDX Logs
+      - name: View SSDX Logs
+        if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true'
+        run: |
+          errors=$(cat .ssdx/logs/*.log | npx pino-pretty --singleLine --hideObject --minimumLevel error | wc -l)
+          if [ "$errors" -ne 0 ]; then echo "::error::$errors SSDX errors found"; fi
+          cat .ssdx/logs/*.log | npx pino-pretty
+          rm -rf .ssdx/logs
+
       # Get package keys
       - name: Get package keys
         if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true'
@@ -128,52 +142,33 @@ jobs:
           client-id: ${{ secrets.SF_PROD_CLIENT_ID }}
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
 
-      - name: Delete Unpackagable
-        run: rm -rf ./force-app/unpackagable && rm -rf ./force-app/unpackagable-with-auto-deploy
+      # Run Pre-Deploy Steps
+      - name: Run Pre-Deploy Steps
+        run: npx ssdx resource --pre-deploy --target-org ${{ needs.scratch-org.outputs.username }} --show-output --ci
 
-      - name: Push source to scratch org
-        run: sf project:deploy:start --ignore-conflicts --source-dir ./force-app --target-org ${{ needs.scratch-org.outputs.username }}
-
-  # -------------------------------------------------------------------------- #
-  #                             Test Unpackagable                              #
-  # -------------------------------------------------------------------------- #
-
-  validate-unpackagable:
-    name: Validate
-    needs: [scratch-org, install-dependencies, compile]
-    permissions:
-      contents: read
-      id-token: write
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        folder:
-          - unpackagable
-          - unpackagable-with-auto-deploy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: sopra-steria-salesforce/sf-cli-setup@v0.8
-        if: needs.scratch-org.outputs.username
-        with:
-          sf-cli-version: 2.34.7
-          username: ${{ needs.scratch-org.outputs.username }}
-          instance-url: ${{ needs.scratch-org.outputs.instanceUrl }}
-          client-id: ${{ secrets.SF_PROD_CLIENT_ID }}
-          private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
-
-      - name: Check for 'unpackagable' Folders
-        id: unpackagable
+      # View SSDX Logs
+      - name: View SSDX Logs
         run: |
-          if [ -d ./force-app/${{ matrix.folder }} ]; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
+          errors=$(cat .ssdx/logs/*.log | npx pino-pretty --singleLine --hideObject --minimumLevel error | wc -l)
+          if [ "$errors" -ne 0 ]; then echo "::error::$errors SSDX errors found"; fi
+          cat .ssdx/logs/*.log | npx pino-pretty
+          rm -rf .ssdx/logs
 
-      - name: Validate Unpackagable
-        if: fromJSON(steps.unpackagable.outputs.exists)
-        run: sf project:deploy:validate --source-dir ./force-app/${{ matrix.folder }} --target-org ${{ needs.scratch-org.outputs.username }} --test-level RunSpecifiedTests --tests '' #! do not run any tests here, as it can interfere with the run-tests jobs (for some unknown reason)
+      # Deploy
+      - name: Push source to scratch org
+        run: sf project:deploy:start --ignore-conflicts --target-org ${{ needs.scratch-org.outputs.username }}
+
+      # Run Post-Deploy Steps
+      - name: Run Post-Deploy Steps
+        run: npx ssdx resource --post-deploy --target-org ${{ needs.scratch-org.outputs.username }} --show-output --ci
+
+      # View SSDX Logs
+      - name: View SSDX Logs
+        run: |
+          errors=$(cat .ssdx/logs/*.log | npx pino-pretty --singleLine --hideObject --minimumLevel error | wc -l)
+          if [ "$errors" -ne 0 ]; then echo "::error::$errors SSDX errors found"; fi
+          cat .ssdx/logs/*.log | npx pino-pretty
+          rm -rf .ssdx/logs
 
   # -------------------------------------------------------------------------- #
   #                               Run Apex Tests                               #
@@ -196,10 +191,6 @@ jobs:
           instance-url: ${{ needs.scratch-org.outputs.instanceUrl }}
           client-id: ${{ secrets.SF_PROD_CLIENT_ID }}
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
-
-      # Delete unpackagable folders
-      - name: Delete Unpackagable
-        run: rm -rf ./force-app/unpackagable && rm -rf ./force-app/unpackagable-with-auto-deploy
 
       # Get Test Classes
       - name: Get Test Classes
@@ -242,10 +233,6 @@ jobs:
         with:
           name: apex-tests
           path: ./tests/apex
-
-      # Delete unpackagable folders
-      - name: Delete Unpackagable
-        run: rm -rf ./force-app/unpackagable && rm -rf ./force-app/unpackagable-with-auto-deploy
 
       # Check if repo has classes
       - name: Check if repo has classes

@@ -153,21 +153,17 @@ jobs:
           fi
           echo "successfullyInstalled=true" >> $GITHUB_OUTPUT
 
-      # Load .env file
-      - name: Load .env file
-        uses: xom9ikk/dotenv@v2.3.0
-        with:
-          path: ./env
-          mode: ${{ inputs.ENV }}
-          load-mode: skip
+      # Run Post-Install Steps
+      - name: Run Post-Install Steps
+        run: npx ssdx resource --post-install --test-level RunLocalTests --show-output --ci
 
-      # Deploy unpackagable content
-      - name: Deploy unpackagable content
+      # View SSDX Logs
+      - name: View SSDX Logs
         run: |
-          if [ -d "./force-app/unpackagable-with-auto-deploy" ]; then
-            echo "Starting deployment of ./force-app/unpackagable-with-auto-deploy"
-            sf project:deploy:start --ignore-conflicts --source-dir ./force-app/unpackagable-with-auto-deploy --test-level RunLocalTests
-          fi
+          errors=$(cat .ssdx/logs/*.log | npx pino-pretty --singleLine --hideObject --minimumLevel error | wc -l)
+          if [ "$errors" -ne 0 ]; then echo "::error::$errors SSDX errors found"; fi
+          cat .ssdx/logs/*.log | npx pino-pretty
+          rm -rf .ssdx/logs
 
     outputs:
       successfullyInstalled: ${{ steps.check-error.outputs.successfullyInstalled }}

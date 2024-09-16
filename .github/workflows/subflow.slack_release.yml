@@ -62,7 +62,7 @@ jobs:
 
           echo "changelog=$log" >> $GITHUB_OUTPUT
 
-      - uses: MariachiBear/get-repo-name-action@v1.2.0
+      - uses: MariachiBear/get-repo-name-action@v1.3.0
         id: repo-name
 
       - name: Fetch Payload

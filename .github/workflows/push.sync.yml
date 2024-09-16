@@ -99,7 +99,7 @@ jobs:
             To start validation, run `/retry` in a comment.
 
       - name: '[Fallback] Get Repo Name'
-        uses: MariachiBear/get-repo-name-action@v1.2.0
+        uses: MariachiBear/get-repo-name-action@v1.3.0
         if: steps.push.outcome != 'success'
         id: repo-name
 
@@ -166,7 +166,7 @@ jobs:
         if: steps.cache-thread-ts.outputs.cache-hit == 'true'
         continue-on-error: true
 
-      - uses: MariachiBear/get-repo-name-action@v1.2.0
+      - uses: MariachiBear/get-repo-name-action@v1.3.0
         if: steps.cache-thread-ts.outputs.cache-hit == 'true'
         id: repo-name
 

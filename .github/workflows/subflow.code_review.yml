@@ -102,7 +102,7 @@ jobs:
         id: status
         run: |
           echo "text=*Status*: ${{ github.event.client_payload.status }}" >> $GITHUB_OUTPUT
-      - uses: MariachiBear/get-repo-name-action@v1.2.0
+      - uses: MariachiBear/get-repo-name-action@v1.3.0
         id: repo-name
     outputs:
       jiraId: ${{ steps.jira.outputs.id }}

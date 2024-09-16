@@ -135,7 +135,7 @@ jobs:
           echo "successfullyCreatedPackage=true" >> $GITHUB_OUTPUT
 
       # Get Repo Name
-      - uses: MariachiBear/get-repo-name-action@v1.2.0
+      - uses: MariachiBear/get-repo-name-action@v1.3.0
         if: failure()
         id: repo-name
 

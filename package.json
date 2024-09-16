@@ -1,6 +1,6 @@
 {
 	"scripts": {
-		"preinstall": "git config core.hooksPath ./.husky",
+		"preinstall": "git config core.hooksPath ./.github/hooks",
 		"lint": "eslint **/{lwc,aura}/**/*.js",
 		"test": "npm run test:unit",
 		"test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
@@ -13,7 +13,7 @@
 		"precommit": "lint-staged",
 		"auth:devhub": "sf auth:web:login --set-default-dev-hub --alias ",
 		"auth:sandbox": "sf auth:web:login --instance-url https://test.salesforce.com --alias ",
-		"scratch:create": "npx ssdx create --",
+		"scratch:create": "npx ssdx create",
 		"scratch:help": "npx ssdx create -h && echo && echo && echo && echo 'run: \"npm run scratch:create -- <PARAMETERS_FROM_ABOVE>\"'",
 		"project:retrieve": "sf project:retrieve:start",
 		"project:deploy": "sf project:deploy:start",

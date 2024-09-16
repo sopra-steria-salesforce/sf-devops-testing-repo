@@ -3,7 +3,7 @@
 	"printWidth": 200,
 	"singleQuote": true,
 	"tabWidth": 4,
-	"useTabs": true,
+	"useTabs": false,
 	"plugins": ["prettier-plugin-apex", "@prettier/plugin-xml"],
 	"overrides": [
 		{

@@ -72,7 +72,6 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-
       # Set Deployment Channel
       # -----------------------------------------------------
       - name: ${{ inputs.post-to-deployment-channel && '✅' || '🔘' }} Post to Deployment Channel

@@ -47,7 +47,7 @@ You will need one dedicated user in every Salesforce instance to deploy on behal
         - `Create and Update Second-Generation Packages`
         - `Delete Second-Generation Packages`
         - `Modify Metadata Through Metadata API Functions`
-    - With the following Object Settings:
+    - With the following Object Settings: (PRODUCTION ONLY)
         - `Active Scratch Orgs`: `modify all`
         - `Scratch Org Infos`: `modify all`
 1. Assign the permission set to the new integration user

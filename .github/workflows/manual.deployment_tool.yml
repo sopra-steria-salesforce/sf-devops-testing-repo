@@ -64,7 +64,7 @@ jobs:
     uses: ./.github/workflows/subflow.deploy_package.yml
     secrets: inherit
     with:
-      ENV: 'preprod' # TODO change to prod
+      ENV: 'prod'
       PACKAGE_ID: ${{ needs.package.outputs.id }}
       TAG: ${{ needs.package.outputs.tag }}
       POST_TO_SLACK: true

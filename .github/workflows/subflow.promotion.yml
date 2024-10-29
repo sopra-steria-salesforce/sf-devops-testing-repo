@@ -54,7 +54,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    if: needs.check-promotion.outputs.shouldPromote
+    if: fromJSON(needs.check-promotion.outputs.shouldPromote)
     steps:
       - uses: actions/checkout@v4
       - uses: sopra-steria-salesforce/sf-cli-setup@v0.8
@@ -78,7 +78,7 @@ jobs:
       contents: read
       id-token: write
     needs: check-promotion
-    if: needs.check-promotion.outputs.shouldPromote
+    if: fromJSON(needs.check-promotion.outputs.shouldPromote)
     steps:
       - uses: actions/create-github-app-token@v1
         id: generate_token

@@ -11,6 +11,10 @@ winget install -e --id OpenJS.NodeJS -v 20.9.0
 winget install -e --id GitHub.GitHubDesktop
 winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id EclipseAdoptium.Temurin.17.JDK
+winget install -e --id Git.Git
+$CurrentPATH = ([Environment]::GetEnvironmentVariable("PATH")).Split(";")
+$NewPATH = ($CurrentPATH + "C:\Program Files\git\bin") -Join ";"
+[Environment]::SetEnvironmentVariable("PATH", $NewPath, [EnvironmentVariableTarget]::Machine)
 ```
 
 ## macOS

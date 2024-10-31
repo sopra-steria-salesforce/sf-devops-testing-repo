@@ -38,6 +38,7 @@ jobs:
 
           for package in $(sf package version list --packages $packageName --json --released --order-by="CreatedDate desc" | jq -r '.result | .[].SubscriberPackageVersionId'); do
             if [[ $package == "${{ inputs.PACKAGE_ID }}" ]]; then
+              echo "shouldPromote=false" >> $GITHUB_OUTPUT
               exit 0 # ! found a released packaged, should not continue promotion
             fi
           done

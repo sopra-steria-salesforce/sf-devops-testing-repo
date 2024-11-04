@@ -38,7 +38,6 @@ jobs:
 
           for package in $(sf package version list --packages $packageName --json --released --order-by="CreatedDate desc" | jq -r '.result | .[].SubscriberPackageVersionId'); do
             if [[ $package == "${{ inputs.PACKAGE_ID }}" ]]; then
-              echo "shouldPromote=false" >> $GITHUB_OUTPUT
               exit 0 # ! found a released packaged, should not continue promotion
             fi
           done
@@ -55,7 +54,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    if: fromJSON(needs.check-promotion.outputs.shouldPromote)
+    if: needs.check-promotion.outputs.shouldPromote == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: sopra-steria-salesforce/sf-cli-setup@v0.8
@@ -79,7 +78,7 @@ jobs:
       contents: read
       id-token: write
     needs: check-promotion
-    if: fromJSON(needs.check-promotion.outputs.shouldPromote)
+    if: needs.check-promotion.outputs.shouldPromote == 'true'
     steps:
       - uses: actions/create-github-app-token@v1
         id: generate_token

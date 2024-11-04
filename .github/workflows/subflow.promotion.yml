@@ -28,20 +28,22 @@ jobs:
           username: ${{ vars.SF_PROD_USERNAME }}
           client-id: ${{ secrets.SF_PROD_CLIENT_ID }}
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
-          set-default-dev-hub: true
+          set-default-org: true
 
-      # Check if promoted
+      - name: Query Released Packages
+        run: sf data query --query "${{ env.QUERY }}" --use-tooling-api --json | jq -r '.result.totalSize' > totalSize
+        env:
+          QUERY: SELECT COUNT() FROM Package2Version WHERE SubscriberPackageVersionId = '${{ inputs.PACKAGE_ID }}' AND IsReleased = TRUE
+
       - name: Check if promoted
         id: check-promotion-step
-        run: |
-          packageName=$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].package' -r)
+        run: echo "shouldPromote=$(if [ $(cat totalSize) -eq 0 ]; then echo true; else echo false; fi)" >> $GITHUB_OUTPUT
 
-          for package in $(sf package version list --packages $packageName --json --released --order-by="CreatedDate desc" | jq -r '.result | .[].SubscriberPackageVersionId'); do
-            if [[ $package == "${{ inputs.PACKAGE_ID }}" ]]; then
-              exit 0 # ! found a released packaged, should not continue promotion
-            fi
-          done
-          echo "shouldPromote=true" >> $GITHUB_OUTPUT
+      - run: echo "::notice::shouldPromote is true"
+        if: fromJSON(steps.check-promotion-step.outputs.shouldPromote)
+      - run: echo "::notice::shouldPromote is false (already promoted)"
+        if: fromJSON(steps.check-promotion-step.outputs.shouldPromote) == false
+
     outputs:
       shouldPromote: ${{ steps.check-promotion-step.outputs.shouldPromote }}
 
@@ -54,7 +56,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    if: needs.check-promotion.outputs.shouldPromote == 'true'
+    if: fromJSON(needs.check-promotion.outputs.shouldPromote)
     steps:
       - uses: actions/checkout@v4
       - uses: sopra-steria-salesforce/sf-cli-setup@v0.8
@@ -78,7 +80,7 @@ jobs:
       contents: read
       id-token: write
     needs: check-promotion
-    if: needs.check-promotion.outputs.shouldPromote == 'true'
+    if: fromJSON(needs.check-promotion.outputs.shouldPromote)
     steps:
       - uses: actions/create-github-app-token@v1
         id: generate_token

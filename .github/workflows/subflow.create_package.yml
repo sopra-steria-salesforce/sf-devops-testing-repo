@@ -43,6 +43,14 @@ jobs:
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
           set-default-dev-hub: true
 
+      - name: Set Environment Variables
+        uses: falti/dotenv-action@v1.1.4
+        with:
+          path: .env/${{ (github.ref_name == 'master' || github.ref_name == 'main') && 'prod' || github.ref_name }} # imports .env/prod for master/main, otherwise .env/branchname (e.g., .env/preprod)
+          ensure-exists: false
+          export-variables: true
+          keys-case: bypass
+
       # Get Config File
       - name: Get Config File
         id: config

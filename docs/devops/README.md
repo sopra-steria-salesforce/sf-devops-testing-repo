@@ -138,9 +138,9 @@ open ~/Desktop/certificates
 
 Then open the following file in VS Code:
 
--   Open `PROD.private.key`, copy the text and then save it in the GitHub secret as `SF_PROD_PRIVATE_KEY`
--   Open `PREPROD.private.key`, copy the text and then save it in the GitHub secret as `SF_PREPROD_PRIVATE_KEY`
--   Open `SIT.private.key`, copy the text and then save it in the GitHub secret as `SF_SIT_PRIVATE_KEY`
+-   Open `PROD.private.key`, `PREPROD.private.key` and `SIT.private.key`
+-   Remove all newlines (everything on one line, no `\n` needed)
+-   Copy the text and then save it in the GitHub secret as `SF_PROD_PRIVATE_KEY`, `SF_PREPROD_PRIVATE_KEY` and `SF_SIT_PRIVATE_KEY`
 
 ### Create Connected App
 

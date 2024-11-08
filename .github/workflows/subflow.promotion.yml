@@ -11,8 +11,6 @@ on:
     outputs:
       shouldPromote:
         value: ${{ jobs.check-promotion.outputs.shouldPromote }}
-env:
-  MAIN_BRANCH: main
 jobs:
   check-promotion:
     name: Check Promotion
@@ -82,6 +80,11 @@ jobs:
     needs: check-promotion
     if: fromJSON(needs.check-promotion.outputs.shouldPromote)
     steps:
+      - uses: actions/checkout@v4
+      - name: Set Main Branch
+        run: |
+          echo "MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')" >> $GITHUB_ENV
+
       - uses: actions/create-github-app-token@v1
         id: generate_token
         with:

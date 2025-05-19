@@ -58,7 +58,7 @@ Make sure you've performed the steps in [Local Setup](docs/devops/local-setup.md
 
 # Template Updates
 
-You can easily merge in new changes to the template
+You can easily merge in new changes from the template
 
 1. `git remote add template https://github.com/sopra-steria-salesforce/salesforce-dx-template`
 1. `git fetch --all`

@@ -169,7 +169,7 @@ Then open the following file in VS Code:
 
 ## Jira Integration
 
-See [Manage API tokens for your Atlassian account](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) for how to create an API token. This token (together with your username) will be stored as the secret `SF_JIRA_ACCESS_TOKEN`.
+See [Manage API tokens for your Atlassian account](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) for how to create an API token. This token (together with your username) will be stored as the secret `SF_JIRA_ACCESS_TOKEN`: `username:token`
 
 Example : `SF_JIRA_ACCESS_TOKEN` = `john.foreland@soprasteria.com:ATATT3xFfGF0sSZOGXfSJRdZI1a4W_NoP1uev`
 

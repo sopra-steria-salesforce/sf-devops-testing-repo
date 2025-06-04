@@ -8,4 +8,4 @@ updates:
   - package-ecosystem: github-actions
     directory: '/.github/workflows'
     schedule:
-      interval: monthly
+      interval: daily

@@ -3,12 +3,11 @@
         "preinstall": "git config core.hooksPath ./.github/hooks",
         "lint": "eslint **/{lwc,aura}/**/*.js",
         "test": "npm run test:unit",
-        "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
-        "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
-        "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
-        "test:unit:coverage": "sfdx-lwc-jest --coverage --skipApiVersionCheck",
+        "test:unit": "sfdx-lwc-jest",
+        "test:unit:watch": "sfdx-lwc-jest --watch",
+        "test:unit:debug": "sfdx-lwc-jest --debug",
+        "test:unit:coverage": "sfdx-lwc-jest --coverage",
         "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-        "prettier:file": "prettier --write",
         "prettier:verify": "prettier --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
         "precommit": "lint-staged",
         "auth:devhub": "sf auth:web:login --set-default-dev-hub --alias ",
@@ -24,11 +23,11 @@
         "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
             "prettier --write"
         ],
-        "**/{aura,lwc}/**": [
+        "**/{aura,lwc}/**/*.js": [
             "eslint"
         ],
         "**/lwc/**": [
-            "sfdx-lwc-jest --skipApiVersionCheck -- --bail --findRelatedTests"
+            "sfdx-lwc-jest -- --bail --findRelatedTests --passWithNoTests"
         ]
     },
     "devDependencies": {
@@ -36,14 +35,12 @@
         "@lwc/eslint-plugin-lwc": "^3.0.0",
         "@prettier/plugin-xml": "^3.4.1",
         "@sa11y/jest": "^7.2.0",
-        "@salesforce/cli": "^2.90.4",
         "@salesforce/core": "^8.12.0",
         "@salesforce/eslint-config-lwc": "^4.0.0",
         "@salesforce/eslint-plugin-aura": "^3.0.0",
         "@salesforce/eslint-plugin-lightning": "^2.0.0",
         "@salesforce/sfdx-lwc-jest": "^7.0.1",
         "eslint": "^9.28.0",
-        "eslint-config-prettier": "10.1.5",
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-jest": "^28.12.0",
         "jest-canvas-mock": "^2.5.2",
@@ -51,9 +48,9 @@
         "pino-pretty": "^13.0.0",
         "prettier": "^3.5.3",
         "prettier-plugin-apex": "^2.2.6",
-        "ssdx-cli": "^0.11.2"
+        "ssdx-cli": "^1.0.0"
     },
     "volta": {
-        "node": "18.19.1"
+        "node": "20.15.0"
     }
 }

@@ -374,7 +374,7 @@ jobs:
 
       # Update version number
       - name: Update version number
-        uses: sopra-steria-salesforce/sf-unlocked-package-version-updater@v1
+        uses: sopra-steria-salesforce/sf-unlocked-package-version-updater@v2
 
       - run: cat sfdx-project.json
 

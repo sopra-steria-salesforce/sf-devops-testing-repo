@@ -170,7 +170,7 @@ jobs:
             - Authentication to the existing scratch org failed (re-run validation to get another)
 
       - name: Authenticate Scratch Org
-        uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+        uses: sopra-steria-salesforce/sf-cli-setup@v1
         if: needs.login.outputs.username
         with:
           sf-cli-version: 2.88.6

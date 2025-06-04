@@ -91,7 +91,7 @@ jobs:
         if: steps.check.outputs.cached == 'true'
 
       - name: Authenticate Scratch Org
-        uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+        uses: sopra-steria-salesforce/sf-cli-setup@v1
         continue-on-error: true
         if: steps.check.outputs.cached == 'true'
         with:
@@ -136,7 +136,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Authenticate Dev Hub
-        uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+        uses: sopra-steria-salesforce/sf-cli-setup@v1
         continue-on-error: true
         with:
           sf-cli-version: 2.88.6
@@ -145,7 +145,7 @@ jobs:
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
           set-default-dev-hub: true
       - name: Authenticate Scratch Org
-        uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+        uses: sopra-steria-salesforce/sf-cli-setup@v1
         continue-on-error: true
         with:
           sf-cli-version: 2.88.6
@@ -179,7 +179,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+      - uses: sopra-steria-salesforce/sf-cli-setup@v1
         with:
           sf-cli-version: 2.88.6
           username: ${{ vars.SF_PROD_USERNAME }}

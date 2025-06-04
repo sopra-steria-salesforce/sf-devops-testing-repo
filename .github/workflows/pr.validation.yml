@@ -63,7 +63,7 @@ jobs:
           key: dependency-changes-pr-${{ github.event.number }}-org-${{ needs.scratch-org.outputs.username }}-${{ hashFiles('sfdx-project.json') }}
       - name: Authenticate DevHub
         if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true'
-        uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+        uses: sopra-steria-salesforce/sf-cli-setup@v1
         with:
           sf-cli-version: 2.88.6
           username: ${{ vars.SF_PROD_USERNAME }}
@@ -71,7 +71,7 @@ jobs:
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
       - name: Authenticate Scratch Org
         if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true' && needs.scratch-org.outputs.username
-        uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+        uses: sopra-steria-salesforce/sf-cli-setup@v1
         with:
           sf-cli-version: 2.88.6
           username: ${{ needs.scratch-org.outputs.username }}
@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+      - uses: sopra-steria-salesforce/sf-cli-setup@v1
         if: needs.scratch-org.outputs.username
         with:
           sf-cli-version: 2.88.6
@@ -195,7 +195,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sopra-steria-salesforce/sf-cli-setup@v0.8
+      - uses: sopra-steria-salesforce/sf-cli-setup@v1
         if: needs.scratch-org.outputs.username
         with:
           sf-cli-version: 2.88.6

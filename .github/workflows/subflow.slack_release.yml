@@ -82,7 +82,6 @@ jobs:
     uses: ./.github/workflows/subflow.slack.yml
     secrets: inherit
     with:
-      env: ${{ inputs.ENV }}
       job_name: slack release notes
       post-to-release-channel: true
       blocks: ${{ needs.slack-prep.outputs.blocks }}

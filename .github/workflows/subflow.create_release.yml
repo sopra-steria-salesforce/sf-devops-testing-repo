@@ -48,7 +48,7 @@ jobs:
 
       # Generate changelog from commits
       - name: Build Delta Changelog
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v5
         id: delta-changelog
         with:
           configuration: .github/changelog/delta_changelog.json
@@ -59,7 +59,7 @@ jobs:
 
       # Generate changelog from commits
       - name: Build Full Changelog
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v5
         id: full-changelog
         with:
           configuration: .github/changelog/full_changelog.json

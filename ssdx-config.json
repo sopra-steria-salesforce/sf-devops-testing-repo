@@ -14,27 +14,7 @@
 		}
 	],
 	"post_deploy": [
-		{
-			"type": "apex",
-			"value": "bin/apex/addToGroup.apex",
-			"continue_on_error": true
-		},
-		{
-			"type": "js",
-			"value": "bin/js/manipulateMetadataBeforeDeploy.js"
-		},
-		{
-			"type": "metadata",
-			"value": "unpackaged"
-		},
-		{
-			"type": "permissionSet",
-			"value": "PermissionSetGroupDevName"
-		},
-		{
-			"type": "permissionSet",
-			"value": "PermissionSetDevName"
-		}
+		
 	],
 	"post_install": [
 		{

@@ -108,16 +108,16 @@ jobs:
           token: ${{ secrets.SF_SLACK_BOT_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
-            ${{ inputs.blocks && env.blocks }}
-            ${{ inputs.attachment_type && env.attachments }}
-            ${{ inputs.text && env.text }}
-            ${{ inputs.sender_name && env.username }}
-            ${{ inputs.sender_icon && env.icon_url }}
-            ${{ inputs.unfurl_links && env.unfurl_links }}
-            ${{ inputs.unfurl_media && env.unfurl_media }}
-            ${{ inputs.update_ts && env.ts }}
-            ${{ inputs.thread_ts && env.thread_ts }}
-            ${{ inputs.reply_broadcast && env.reply_broadcast }}
+            ${{ inputs.blocks && env.blocks || ''}}
+            ${{ inputs.attachment_type && env.attachments || ''}}
+            ${{ inputs.text && env.text || ''}}
+            ${{ inputs.sender_name && env.username || ''}}
+            ${{ inputs.sender_icon && env.icon_url || ''}}
+            ${{ inputs.unfurl_links && env.unfurl_links || ''}}
+            ${{ inputs.unfurl_media && env.unfurl_media || ''}}
+            ${{ inputs.update_ts && env.ts || ''}}
+            ${{ inputs.thread_ts && env.thread_ts || ''}}
+            ${{ inputs.reply_broadcast && env.reply_broadcast || ''}}
         env:
           blocks: "blocks: ${{ inputs.blocks || '[]' }}"
           attachments: "attachments: ${{ inputs.attachment_type == 'in_progress' && env.SLACK_ATTACHMENT_IN_PROGRESS || inputs.attachment_type == 'completed' && env.SLACK_ATTACHMENT_COMPLETED || inputs.attachment_type == 'failed' && env.SLACK_ATTACHMENT_FAILED || '' }}"

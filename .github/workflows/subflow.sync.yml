@@ -110,8 +110,8 @@ jobs:
     with:
       job_name: slack sync report
       post-to-sync-channel: true
-      blocks: '[{"type":"header","text":{"type":"plain_text","text":"[${{ needs.sync.outputs.REPO_NAME }}] Sync failed → ${{ inputs.env }}","emoji":true}},{"type":"section","fields":[{"type":"mrkdwn","text":"*Status*\n🔴 Not merged"},{"type":"mrkdwn","text":"*Opened By*\n<https://github.com/${{ github.actor }}|${{ github.actor }}>"}],"accessory":{"type":"overflow","options":[{"text":{"type":"plain_text","text":"🖥️ Open PR"},"url":"https://github.com/${{ github.repository }}/pull/${{ needs.sync.outputs.PULL_REQUEST_NUMBER }}"},{"text":{"type":"plain_text","text":"🤓 View Logs"},"url":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"},{"text":{"type":"plain_text","text":"🤖 Open Repo"},"url":"https://github.com/${{ github.repository }}"}]}}]'
-      text: '[Sync Failure] ${{ github.ref_name }} → ${{ inputs.env }}'
+      blocks: '[{"type":"header","text":{"type":"plain_text","text":"[${{ needs.sync.outputs.REPO_NAME }}] Sync failed → ${{ inputs.env }}","emoji":true}},{"type":"section","fields":[{"type":"mrkdwn","text":"*Opened By*\n<https://github.com/${{ github.actor }}|${{ github.actor }}>"}],"accessory":{"type":"overflow","options":[{"text":{"type":"plain_text","text":"🖥️ Open PR"},"url":"https://github.com/${{ github.repository }}/pull/${{ needs.sync.outputs.PULL_REQUEST_NUMBER }}"},{"text":{"type":"plain_text","text":"🤓 View Logs"},"url":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"},{"text":{"type":"plain_text","text":"🤖 Open Repo"},"url":"https://github.com/${{ github.repository }}"}]}}]'
+      text: Sync Failure - ${{ github.ref_name }} → ${{ inputs.env }}
       unfurl_links: false
       unfurl_media: false
       # view blocks in https://app.slack.com/block-kit-builder

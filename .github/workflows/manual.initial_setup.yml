@@ -105,7 +105,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
@@ -131,7 +131,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
@@ -161,7 +161,7 @@ jobs:
           - require_up_to_date_branch
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
@@ -191,7 +191,7 @@ jobs:
     steps:
       - name: Generate GitHub token
         id: generate_token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
           private-key: ${{ secrets.SF_GITHUB_BOT_PRIVATE_KEY }}
@@ -225,7 +225,7 @@ jobs:
     steps:
       - name: Generate GitHub token
         id: generate_token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
           private-key: ${{ secrets.SF_GITHUB_BOT_PRIVATE_KEY }}
@@ -251,7 +251,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
@@ -277,7 +277,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
@@ -313,7 +313,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
@@ -401,7 +401,7 @@ jobs:
         branch: [preprod]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}

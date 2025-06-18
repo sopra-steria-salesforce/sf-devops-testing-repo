@@ -85,7 +85,7 @@ jobs:
         run: |
           echo "MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')" >> $GITHUB_ENV
 
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}

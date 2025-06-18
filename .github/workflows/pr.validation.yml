@@ -80,7 +80,7 @@ jobs:
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
 
       # Install npm dependencies
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         if: steps.dependencies-cache.outputs.cache-hit != 'true' && steps.dependencies.outputs.exists == 'true'
         id: generate_token
         with:
@@ -142,7 +142,7 @@ jobs:
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
 
       # Install npm dependencies
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
@@ -307,7 +307,7 @@ jobs:
       id-token: write
     needs: check-code-coverage
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}

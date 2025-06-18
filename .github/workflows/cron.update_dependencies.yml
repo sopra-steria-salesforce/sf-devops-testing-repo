@@ -49,7 +49,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}

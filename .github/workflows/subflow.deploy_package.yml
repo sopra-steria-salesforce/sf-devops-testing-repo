@@ -75,7 +75,6 @@ jobs:
     uses: ./.github/workflows/subflow.slack.yml
     secrets: inherit
     with:
-      env: ${{ inputs.ENV }}
       job_name: slack post
       post-to-deployment-channel: true
       blocks: ${{ needs.slack-prep.outputs.blocks }}
@@ -195,7 +194,6 @@ jobs:
     uses: ./.github/workflows/subflow.slack.yml
     secrets: inherit
     with:
-      env: ${{ inputs.ENV }}
       job_name: slack status update
       post-to-deployment-channel: true
       update_ts: ${{ needs.slack-message.outputs.thread-ts }} # update this message
@@ -213,7 +211,6 @@ jobs:
     uses: ./.github/workflows/subflow.slack.yml
     secrets: inherit
     with:
-      env: ${{ inputs.ENV }}
       job_name: slack error comment
       post-to-deployment-channel: true
       thread_ts: ${{ needs.slack-message.outputs.thread-ts }} # reply to the update instead, in case the original message failed to post
@@ -229,7 +226,6 @@ jobs:
     uses: ./.github/workflows/subflow.slack.yml
     secrets: inherit
     with:
-      env: ${{ inputs.ENV }}
       job_name: 'slack @channel comment'
       post-to-deployment-channel: true
       thread_ts: ${{ needs.slack-message.outputs.thread-ts }} # reply to the update instead, in case the original message failed to post

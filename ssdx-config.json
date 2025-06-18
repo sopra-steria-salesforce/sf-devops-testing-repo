@@ -24,6 +24,10 @@
 			"value": "bin/js/manipulateMetadataBeforeDeploy.js"
 		},
 		{
+			"type": "metadata",
+			"value": "unpackaged"
+		},
+		{
 			"type": "permissionSet",
 			"value": "PermissionSetGroupDevName"
 		},
@@ -36,6 +40,10 @@
 		{
 			"type": "js",
 			"value": "bin/js/manipulateMetadataBeforeDeploy.js"
+		},
+		{
+			"type": "metadata",
+			"value": "unpackaged"
 		}
 	]
 }

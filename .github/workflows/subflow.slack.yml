@@ -102,24 +102,22 @@ jobs:
       - name: Post to Slack
         id: slack
         if: inputs.blocks != '' || inputs.attachment_type != '' || inputs.text != ''
-        uses: slackapi/slack-github-action@v1.25.0
+        uses: slackapi/slack-github-action@v2
         with:
-          update-ts: ${{ inputs.update_ts }}
-          channel-id: ${{ env.SLACK_CHANNEL }}
+          method: ${{ inputs.update_ts != '' && 'chat.update' || 'chat.postMessage' }}
+          token: ${{ secrets.SF_SLACK_BOT_TOKEN }}
           payload: |
-            {
-              "blocks": ${{ inputs.blocks || '[]' }},
-              "attachments": ${{ inputs.attachment_type == 'in_progress' && env.SLACK_ATTACHMENT_IN_PROGRESS || inputs.attachment_type == 'completed' && env.SLACK_ATTACHMENT_COMPLETED || inputs.attachment_type == 'failed' && env.SLACK_ATTACHMENT_FAILED || '[]' }},
-              "text": "${{ inputs.text }}",
-              "username": "${{ inputs.sender_name }}",
-              "icon_url": "${{ inputs.sender_icon }}",
-              "unfurl_links": ${{ inputs.unfurl_links }},
-              "unfurl_media": ${{ inputs.unfurl_media }},
-              "thread_ts": "${{ inputs.thread_ts }}",
-              "reply_broadcast": ${{ inputs.reply_broadcast }}
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SF_SLACK_BOT_TOKEN }}
+            channel: ${{ env.SLACK_CHANNEL }}
+            blocks: ${{ inputs.blocks || '[]' }}
+            attachments: ${{ inputs.attachment_type == 'in_progress' && env.SLACK_ATTACHMENT_IN_PROGRESS || inputs.attachment_type == 'completed' && env.SLACK_ATTACHMENT_COMPLETED || inputs.attachment_type == 'failed' && env.SLACK_ATTACHMENT_FAILED || '[]' }}
+            text: ${{ inputs.text }}
+            username: ${{ inputs.sender_name }}
+            icon_url: ${{ inputs.sender_icon }}
+            unfurl_links: ${{ inputs.unfurl_links }}
+            unfurl_media: ${{ inputs.unfurl_media }}
+            ts: ${{ inputs.update_ts }}
+            thread_ts: ${{ inputs.thread_ts }}
+            reply_broadcast: ${{ inputs.reply_broadcast }}
 
       # Format Slack Thread ID
       - name: Format Slack Thread ID

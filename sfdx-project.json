@@ -1,21 +1,13 @@
 {
-    "packageDirectories": [
-        {
-            "versionNumber": "0.2.0.NEXT",
-            "path": "force-app",
-            "default": true,
-            "package": "sf-devops-testing-repo",
-            "versionDescription": ""
-        },
-        {
-            "path": "unpackaged"
-        }
-    ],
-    "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "61.0",
-    "packageAliases": {
-        "sf-devops-testing-repo": "0HoP100000001KHKAY",
-        "sf-devops-testing-repo@0.1.0-1": "04tP10000005kNBIAY"
-    }
+	"packageDirectories": [
+		{
+			"path": "force-app",
+			"default": true
+		},
+		{ "path": "unpackaged" }
+	],
+	"namespace": "",
+	"sfdcLoginUrl": "https://login.salesforce.com",
+	"sourceApiVersion": "61.0",
+	"packageAliases": {}
 }

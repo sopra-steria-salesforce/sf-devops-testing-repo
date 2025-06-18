@@ -7,10 +7,15 @@
             "package": "sf-devops-testing-repo",
             "versionDescription": ""
         },
-        { "path": "unpackaged" }
+        {
+            "path": "unpackaged"
+        }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "61.0",
-    "packageAliases": { "sf-devops-testing-repo": "0HoP100000001KHKAY" }
+    "packageAliases": {
+        "sf-devops-testing-repo": "0HoP100000001KHKAY",
+        "sf-devops-testing-repo@0.1.0-1": "04tP10000005kNBIAY"
+    }
 }

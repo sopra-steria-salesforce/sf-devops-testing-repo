@@ -93,26 +93,13 @@ jobs:
         uses: MariachiBear/get-repo-name-action@v1.3.0
         if: steps.push.outcome != 'success' && vars.SF_SLACK_ENABLED == 'true'
         id: repo-name
-
-      - name: '[Fallback] Post to Slack'
-        id: slack-sync-post
-        uses: slackapi/slack-github-action@v1.25.0
-        with:
-          channel-id: ${{ vars.SF_SLACK_SYNC_CHANNEL_ID }}
-          payload: |
-            {
-              "blocks": [{"type":"header","text":{"type":"plain_text","text":"[${{ env.REPO_NAME }}] Sync failed → ${{ env.TO_BRANCH }}","emoji":true}},{"type":"section","fields":[{"type":"mrkdwn","text":"*Status*\n${{ env.STATUS }}"},{"type":"mrkdwn","text":"*${{ env.EDITED_BY }}*\n<https://github.com/${{ github.actor }}|${{ github.actor }}>"}],"accessory":{"type":"overflow","options":[{"text":{"type":"plain_text","text":"🖥️ Open PR"},"url":"https://github.com/${{ github.repository }}/pull/${{ env.PULL_REQUEST_NUMBER }}"},{"text":{"type":"plain_text","text":"🤓 View Logs"},"url":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"},{"text":{"type":"plain_text","text":"🤖 Open Repo"},"url":"https://github.com/${{ github.repository }}"}]}}],
-              "text": "[Sync Failure] ${{ github.ref_name }} → ${{ inputs.env }}",
-              "unfurl_links": false,
-              "unfurl_media": false
-            }
     outputs:
       REPO_NAME: ${{ steps.repo-name.outputs.repository-name }}
       PULL_REQUEST_NUMBER: ${{ steps.create-pr.outputs.PULL_REQUEST_NUMBER }}
       PUSH_OUTCOME: ${{ steps.push.outcome }}
 
   slack-error:
-    name: slack error if sync failed
+    name: Post Slack on Error
     if: needs.sync.outputs.PUSH_OUTCOME != 'success' && vars.SF_SLACK_ENABLED == 'true'
     needs: sync
     permissions:

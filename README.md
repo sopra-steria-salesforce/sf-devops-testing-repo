@@ -30,7 +30,7 @@ Make sure you've performed the steps in [Local Setup](docs/devops/local-setup.md
     - On Windows, the `Documents` folder is synced to OneDrive and will cause issues later!
 1. In GitHub Desktop, click `Repository` → `Open in X`
     - Depending on your system you can have X = `Command Line`, `Git Bash` og `Terminal`
-    - Once opened, type and run `npm install`
+1. Once opened, type and run `npm install`
     - This will install all necessary software for you, including code formatting.
 
 ## Make Changes

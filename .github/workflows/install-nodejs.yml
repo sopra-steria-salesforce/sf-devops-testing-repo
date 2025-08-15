@@ -13,9 +13,9 @@ jobs:
 
       - name: Install Node.js LTS via winget
         run: |
-            winget install Schniz.fnm --accept-source-agreements --accept-package-agreements
-            $env:PATH += ";$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe"
-            fnm env --use-on-cd | Out-String | Invoke-Expression
+          winget install Schniz.fnm --accept-source-agreements --accept-package-agreements
+          $env:PATH += ";$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe"
+          fnm env --use-on-cd | Out-String | Invoke-Expression
           fnm use --install-if-missing 20
         shell: powershell
 

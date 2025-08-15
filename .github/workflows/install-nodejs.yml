@@ -17,10 +17,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install winget
+        run: |
+          Write-Host "Installing winget (Windows Package Manager)..."
+          # Download and install the latest winget from Microsoft Store
+          $progressPreference = 'silentlyContinue'
+          Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+          Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+
+          # Add winget to PATH for current session
+          $env:PATH += ";C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps"
+        shell: powershell
+
       - name: Install Node.js LTS via winget
         run: |
-          Write-Host "Installing Node.js LTS version 20"
-          winget install OpenJS.NodeJS.LTS --version 20
+          Write-Host "Installing Node.js LTS version ${{ inputs.nodejs_version }}"
+          winget install OpenJS.NodeJS.LTS --version ${{ inputs.nodejs_version }} --accept-source-agreements --accept-package-agreements
         shell: powershell
 
       - name: Verify Node.js installation
@@ -35,4 +47,5 @@ jobs:
           Write-Host "✅ Node.js installation completed successfully!"
           Write-Host "Node.js version: $(node --version)"
           Write-Host "npm version: $(npm --version)"
+          Write-Host "Node.js location: $(Get-Command node | Select-Object -ExpandProperty Source)"
         shell: powershell

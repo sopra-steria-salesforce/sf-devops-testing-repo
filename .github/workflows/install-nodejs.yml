@@ -2,12 +2,6 @@ name: Install Node.js LTS on Windows
 
 on:
   workflow_dispatch:
-    inputs:
-      nodejs_version:
-        description: 'Node.js version to install'
-        required: false
-        default: '20'
-        type: string
 
 jobs:
   install-nodejs:
@@ -19,8 +13,8 @@ jobs:
 
       - name: Install Node.js LTS via winget
         run: |
-          Write-Host "Installing Node.js LTS version ${{ inputs.nodejs_version }}"
-          winget install OpenJS.NodeJS.LTS --version ${{ inputs.nodejs_version }} --accept-source-agreements --accept-package-agreements --source winget
+          winget install Schniz.fnm
+          fnm use --install-if-missing 20
         shell: powershell
 
       - name: Verify Node.js installation

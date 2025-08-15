@@ -20,7 +20,7 @@ jobs:
       - name: Install Node.js LTS via winget
         run: |
           Write-Host "Installing Node.js LTS version ${{ inputs.nodejs_version }}"
-          winget install OpenJS.NodeJS.LTS --version ${{ inputs.nodejs_version }} --accept-source-agreements --accept-package-agreements
+          winget install OpenJS.NodeJS.LTS --version ${{ inputs.nodejs_version }} --accept-source-agreements --accept-package-agreements --source winget
         shell: powershell
 
       - name: Verify Node.js installation

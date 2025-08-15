@@ -10,6 +10,7 @@ Open PowerShell and run:
 # Install fnm (fast node manager)
 winget install Schniz.fnm
 $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+fnm env --use-on-cd | Out-String | Invoke-Expression
 
 # install node 20
 fnm use --install-if-missing 20

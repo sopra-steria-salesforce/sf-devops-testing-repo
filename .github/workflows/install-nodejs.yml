@@ -1,7 +1,7 @@
 name: Install Node.js LTS on Windows
 
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   install-nodejs:
@@ -16,8 +16,7 @@ jobs:
       - run: |
           $env:PATH += ";$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe"
           fnm env --use-on-cd | Out-String | Invoke-Expression
-        shell: powershell
-      - run: fnm use --install-if-missing 20
+          fnm use --install-if-missing 20
         shell: powershell
 
       - name: Verify Node.js installation

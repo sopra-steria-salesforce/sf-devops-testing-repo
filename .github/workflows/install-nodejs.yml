@@ -1,0 +1,38 @@
+name: Install Node.js LTS on Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      nodejs_version:
+        description: 'Node.js version to install'
+        required: false
+        default: '20'
+        type: string
+
+jobs:
+  install-nodejs:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js LTS via winget
+        run: |
+          Write-Host "Installing Node.js LTS version 20"
+          winget install OpenJS.NodeJS.LTS --version 20
+        shell: powershell
+
+      - name: Verify Node.js installation
+        run: |
+          Write-Host "Verifying Node.js installation..."
+          node --version
+          npm --version
+        shell: powershell
+
+      - name: Display installation summary
+        run: |
+          Write-Host "✅ Node.js installation completed successfully!"
+          Write-Host "Node.js version: $(node --version)"
+          Write-Host "npm version: $(npm --version)"
+        shell: powershell

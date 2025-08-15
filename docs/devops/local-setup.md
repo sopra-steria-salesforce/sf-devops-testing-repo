@@ -7,7 +7,13 @@ This documentation will help you setup tools and software needed to run Salesfor
 Open PowerShell and run:
 
 ```powershell
-winget install -e --id OpenJS.NodeJS -v 20.9.0
+# Install fnm (fast node manager)
+winget install Schniz.fnm
+$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+
+# install node 20
+fnm use --install-if-missing 20
+
 winget install -e --id GitHub.GitHubDesktop
 winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id EclipseAdoptium.Temurin.17.JDK
@@ -15,6 +21,7 @@ winget install -e --id Git.Git
 $CurrentPATH = ([Environment]::GetEnvironmentVariable("PATH")).Split(";")
 $NewPATH = ($CurrentPATH + "C:\Program Files\git\bin") -Join ";"
 [Environment]::SetEnvironmentVariable("PATH", $NewPath, [EnvironmentVariableTarget]::Machine)
+npm install --global @salesforce/cli
 ```
 
 ## macOS
@@ -31,4 +38,5 @@ brew install --cask github
 brew install --cask visual-studio-code
 brew tap homebrew/cask-versions
 brew install --cask temurin17
+npm install --global @salesforce/cli
 ```

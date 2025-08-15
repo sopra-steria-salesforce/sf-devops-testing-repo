@@ -154,6 +154,9 @@ jobs:
           node-version: 20
       - run: npm ci --prefer-offline --no-audit # force offline installs for quicker run
 
+      - name: Deactivate Source Tracking
+        run: sf org disable tracking --target-org ${{ needs.scratch-org.outputs.username }}
+
       # Run Pre-Deploy Steps
       - name: Run Pre-Deploy Steps
         run: npx ssdx resource --pre-deploy --target-org ${{ needs.scratch-org.outputs.username }} --show-output --ci

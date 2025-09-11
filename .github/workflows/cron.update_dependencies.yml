@@ -59,7 +59,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }} # allows push to master
       - uses: sopra-steria-salesforce/sf-cli-setup@v1
         with:
-          sf-cli-version: 2.92.7
+          sf-cli-version: 2.98.6
           username: ${{ vars.SF_PROD_USERNAME }}
           client-id: ${{ secrets.SF_PROD_CLIENT_ID }}
           private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
@@ -93,20 +93,26 @@ jobs:
               echo "New Package Version: $newPackageVersion" && echo ""
               printf -v versions '%s\n%s' "$oldPackageVersion" "$newPackageVersion"
               
-              #* if the version is already the latest OR the version is null (null means the package/repo is way too old because it goes over the 500 limit from the query and can be ignored)
-              # TODO: can probably do a group by in the query in the previous steps to remove the LIMIT 500 part and avoid null.LATEST
-              if [ "$oldPackageVersion" = "$newPackageVersion" ] || [ "$newPackageVersion" == "null.LATEST" ]; then
-                  echo "No change, current version and newest released version are the same."
+              
+              if [ "$oldPackageVersion" == "null" ]; then
+                  echo "Skipping package $packageName — likely managed package without version numbers"
+              elif [ "$newPackageVersion" == "null.LATEST" ]; then
+                  echo "::notice::Skipping package $packageName — No version found in query results (likely over 500 limit), keeping current version. If wrong, consider updating manually (one time fix, most likely)"
                   project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$oldPackageVersion'"' ./sfdx-project.json)
+                  echo $project > ./sfdx-project.json
+              elif [ "$oldPackageVersion" = "$newPackageVersion" ]; then
+                  echo "Skipping package $packageName — Current version and newest released version are the same."
+                  project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$oldPackageVersion'"' ./sfdx-project.json)
+                  echo $project > ./sfdx-project.json
               elif [[ $versions = "$(sort -V <<< "$versions")" ]]; then
                   echo "::notice::Upgraded $packageName from $oldPackageVersion to $newPackageVersion"
                   project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$newPackageVersion'"' ./sfdx-project.json)
+                  echo $project > ./sfdx-project.json
               else
-                  echo "No change, because a beta version is manually added and is higher than newest released version"
+                  echo "Skipping package $packageName — Current version is higher than the newest released version"
                   project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$oldPackageVersion'"' ./sfdx-project.json)
+                  echo $project > ./sfdx-project.json
               fi
-
-              echo $project > ./sfdx-project.json
               
               ((index=index+1))
           done

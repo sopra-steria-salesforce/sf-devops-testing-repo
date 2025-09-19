@@ -1,17 +1,12 @@
-name: '[Subflow] Slack'
+name: '[Subflow] Sync'
 on:
   workflow_call:
     inputs:
       env:
         type: string
-        default: slack
-env:
-  CACHE_FOLDER: slack_sync_post
-  CACHE_FILE: slack_sync_thread_ts     
 jobs:
   sync:
     name: Sync
-    if: vars.SF_SLACK_ENABLED == 'true'
     permissions:
       contents: read
       id-token: write
@@ -115,4 +110,3 @@ jobs:
       unfurl_links: false
       unfurl_media: false
       # view blocks in https://app.slack.com/block-kit-builder
-    

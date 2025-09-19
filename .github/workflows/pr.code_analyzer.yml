@@ -1,0 +1,40 @@
+name: '[PR] Code Analyzer'
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  # -------------------------------------------------------------------------- #
+  #                               Run Code Analyzer                            #
+  # -------------------------------------------------------------------------- #
+
+  run-code-analyzer:
+      name: Run Salesforce Code Analyzer
+      permissions:
+        contents: read
+        id-token: write
+        pull-requests: write
+        actions: read
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v5
+          - name: Install Salesforce CLI
+            uses: sopra-steria-salesforce/sf-cli-setup@v1
+            with:
+              sf-cli-version: 2.98.6
+          - name: Install Salesforce Code Analyzer Plugin
+            run: sf plugins install code-analyzer@latest
+          - name: Run Salesforce Code Analyzer
+            id: run-code-analyzer
+            uses: forcedotcom/run-code-analyzer@v2
+            with:
+              run-arguments: --workspace . --config-file config/code-analyzer.yml --view detail --rule-selector recommended:1,recommended:2,recommended:3,recommended:4 --output-file sfca_results.html --output-file sfca_results.json
+              results-artifact-name: salesforce-code-analyzer-results
+              github-token: ${{ github.token }}
+
+          - name: Check the Outputs to Determine Whether to Fail
+            if: |
+              steps.run-code-analyzer.outputs.exit-code > 0 ||
+              steps.run-code-analyzer.outputs.num-sev1-violations > 0 || 
+              steps.run-code-analyzer.outputs.num-sev2-violations > 0 ||
+              steps.run-code-analyzer.outputs.num-sev3-violations > 0
+            run: exit 1

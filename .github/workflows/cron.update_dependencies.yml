@@ -94,20 +94,30 @@ jobs:
               printf -v versions '%s\n%s' "$oldPackageVersion" "$newPackageVersion"
               
               
+              #* Skip managed packages
               if [ "$oldPackageVersion" == "null" ]; then
                   echo "Skipping package $packageName — likely managed package without version numbers"
+
+              #* Skip if no version found in query results (likely over 500 limit)
               elif [ "$newPackageVersion" == "null.LATEST" ]; then
                   echo "::notice::Skipping package $packageName — No version found in query results (likely over 500 limit), keeping current version. If wrong, consider updating manually (one time fix, most likely)"
                   project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$oldPackageVersion'"' ./sfdx-project.json)
                   echo $project > ./sfdx-project.json
+         
+              #* Skip if versions are the same
               elif [ "$oldPackageVersion" = "$newPackageVersion" ]; then
                   echo "Skipping package $packageName — Current version and newest released version are the same."
                   project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$oldPackageVersion'"' ./sfdx-project.json)
                   echo $project > ./sfdx-project.json
+                  
+              #* Update if new version is greater than old version
               elif [[ $versions = "$(sort -V <<< "$versions")" ]]; then
                   echo "::notice::Upgraded $packageName from $oldPackageVersion to $newPackageVersion"
                   project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$newPackageVersion'"' ./sfdx-project.json)
                   echo $project > ./sfdx-project.json
+
+             
+              #* Skip if new version is less than old version
               else
                   echo "Skipping package $packageName — Current version is higher than the newest released version"
                   project=$(jq '.packageDirectories[0].dependencies['$index'].versionNumber = "'$oldPackageVersion'"' ./sfdx-project.json)

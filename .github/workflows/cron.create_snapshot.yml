@@ -42,7 +42,7 @@ jobs:
     secrets: inherit
     with:
       alwaysGetScratchOrg: true
-      createFromSnapshot: false
+      createFromSnapshot: false # We never want to create a snapshot from a snapshot.
 
   create-snapshot:
     name: Create snapshot

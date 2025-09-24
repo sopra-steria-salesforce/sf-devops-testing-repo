@@ -1,0 +1,111 @@
+name: '[CRON] Create Snapshot'
+on:
+  push:
+    branches:
+      - feature/108921-snapshot-creation
+
+  workflow_dispatch: # run from the UI
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  check-snapshot-name:
+    name: Check and validate snapshot name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if set
+        id: check
+        run: |
+          if [ -n "${SNAPSHOT_NAME}" ] && [ ${#SNAPSHOT_NAME} -lt 15 ]; then
+                echo "::notice::✅ Snapshot name is set and less than 15 characters."
+                echo "SNAPSHOT_SET=true" >> $GITHUB_OUTPUT
+              else
+                echo "::notice::❌ Snapshot name is NOT set or longer than 15 characters."
+                echo "SNAPSHOT_SET=false" >> $GITHUB_OUTPUT
+              fi
+        env:
+          SNAPSHOT_NAME: ${{vars.SNAPSHOT_NAME}}
+    outputs:
+      SNAPSHOT_SET: ${{ steps.check.outputs.SNAPSHOT_SET || 'false' }}
+
+  scratch-org:
+    name: Scratch Org
+    needs: check-snapshot-name
+    if: needs.check-snapshot-name.outputs.SNAPSHOT_SET == 'true'
+    permissions:
+      contents: read
+      id-token: write
+      issues: write
+      pull-requests: write
+      actions: write
+    uses: ./.github/workflows/subflow.scratch_org.yml
+    secrets: inherit
+    with:
+      alwaysGetScratchOrg: true
+      createFromSnapshot: false
+
+  create-snapshot:
+    name: Create snapshot
+    needs: scratch-org
+    permissions:
+      contents: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: generate_token
+        with:
+          app-id: ${{ secrets.SF_GITHUB_BOT_APP_ID }}
+          private-key: ${{ secrets.SF_GITHUB_BOT_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate_token.outputs.token }} # allows push to master
+      - uses: sopra-steria-salesforce/sf-cli-setup@v1
+        with:
+          sf-cli-version: 2.98.6
+          username: ${{ vars.SF_PROD_USERNAME }}
+          client-id: ${{ secrets.SF_PROD_CLIENT_ID }}
+          private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
+          set-default-org: true
+      - name: Authenticate Scratch Org
+        uses: sopra-steria-salesforce/sf-cli-setup@v1
+        with:
+          sf-cli-version: 2.98.6
+          username: ${{ needs.scratch-org.outputs.username }}
+          instance-url: ${{ needs.scratch-org.outputs.instanceUrl }}
+          client-id: ${{ secrets.SF_PROD_CLIENT_ID }}
+          private-key: ${{ secrets.SF_PROD_PRIVATE_KEY }}
+
+      # Delete Previous Snapshot
+      - name: Delete Previous Snapshot
+        continue-on-error: true
+        run: sf org delete snapshot --snapshot ${{vars.SNAPSHOT_NAME}} --target-dev-hub ${{vars.SF_PROD_USERNAME}} --no-prompt
+
+      # Create snapshot
+      - name: Dispatch Snapshot Creation
+        run: sf org create snapshot --name ${{vars.SNAPSHOT_NAME}} --source-org ${{needs.scratch-org.outputs.username}} --target-dev-hub ${{vars.SF_PROD_USERNAME}} #--description "testing snapshot creation from workflow"
+
+      - name: Update snapshot scratch def
+        run: |
+          SNAP_FILE=./config/project-scratch-def-snapshot.json
+          if [ ! -f "$SNAP_FILE" ]; then
+            echo "::notice::❌ Snapshot scratch def file not found."
+            exit 1
+          fi
+          FILE_SNAP_NAME=$(jq -r '.snapshot' "$SNAP_FILE")
+          VAR_SNAP_NAME="${{ vars.SNAPSHOT_NAME }}"
+
+          if [ "$FILE_SNAP_NAME" != "$VAR_SNAP_NAME" ]; then
+            echo "::notice::🔄 Updating snapshot in scratch def file from '$FILE_SNAP_NAME' to '$VAR_SNAP_NAME'"
+            jq --arg snap "$VAR_SNAP_NAME" '.snapshot = $snap' "$SNAP_FILE" > tmp.json && mv tmp.json "$SNAP_FILE"
+          else
+            echo "::notice::👍 No changes detected to snapshot name"
+          fi
+
+      - name: Check for Changes in project-scratch-def-snapshot.json
+        id: diff
+        run: git diff --exit-code ./config/project-scratch-def-snapshot.json && echo "is_changed=false" >> "$GITHUB_OUTPUT" || echo "is_changed=true" >> "$GITHUB_OUTPUT"
+
+      - uses: fregante/setup-git-user@v2
+      - run: git add ./config/project-scratch-def-snapshot.json &&  git commit -m '[CI] Updated Snapshot Name in Scratch Def' && git push origin HEAD:${{ github.ref_name }}
+        if: steps.diff.outputs.is_changed == 'true'

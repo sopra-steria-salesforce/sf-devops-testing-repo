@@ -26,7 +26,7 @@ jobs:
       pull-requests: write
       actions: write
     uses: ./.github/workflows/subflow.scratch_org.yml
-    if: contains(github.triggering_actor, '[bot]') == false || github.triggering_actor == 'github-bot[bot]' #! Skip if the actor is the custom bot. Allows the standard github-bot[bot] to trigger validation when running /retry
+    if: contains(github.triggering_actor, '[bot]') == false || github.triggering_actor == 'github-actions[bot]' #! Skip if the actor is the custom bot. Allows the standard github-actions[bot] to trigger validation when running /retry
     secrets: inherit
     with:
       alwaysGetScratchOrg: true

@@ -1,12 +1,8 @@
-name: '[CRON] Create Snapshot'
+name: "[CRON] Create Snapshot"
 on:
-  push:
-    branches:
-      - feature/108921-snapshot-creation
-
   workflow_dispatch: # run from the UI
   schedule:
-    - cron: '0 4 * * *'
+    - cron: "0 4 * * *"
 
 jobs:
   init-and-validate:

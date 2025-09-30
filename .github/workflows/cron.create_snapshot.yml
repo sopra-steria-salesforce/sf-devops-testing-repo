@@ -1,13 +1,14 @@
-name: "[CRON] Create Snapshot"
+name: '[CRON] Create Snapshot'
 on:
   workflow_dispatch: # run from the UI
   schedule:
-    - cron: "0 4 * * *"
+    - cron: '0 4 * * *'
 
 jobs:
   init-and-validate:
     name: Init and validate
     runs-on: ubuntu-latest
+    if: vars.ENABLE_SNAPSHOT_GENERATION == 'true'
     steps:
       - uses: sopra-steria-salesforce/sf-cli-setup@v1
         with:
